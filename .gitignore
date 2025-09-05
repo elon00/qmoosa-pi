@@ -1,0 +1,11 @@
+node_modules/
+*.log
+.env
+.DS_Store
+dist/
+build/
+temp-repo/
+frontend/node_modules/
+backend/node_modules/
+contracts/target/
+*.wasm
