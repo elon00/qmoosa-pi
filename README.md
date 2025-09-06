@@ -1,30 +1,104 @@
-# Pi Network launchpad
+# Pi-Network-Launchpad
 
-*Automatically synced with your [v0.app](https://v0.app) deployments*
-
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/martinlutherupa1-gmailcoms-projects/v0-pi-network-launchpad)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/projects/IOHRzjsdlCM)
+A decentralized launchpad platform on the Pi Network blockchain for AI, Crypto, and Post-Quantum projects.
 
 ## Overview
 
-This repository will stay in sync with your deployed chats on [v0.app](https://v0.app).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.app](https://v0.app).
+Pi-Network-Launchpad is a DApp that allows users to connect their Pi wallets, deposit Pi-Network-Launchpad Tokens (PNL), and qualify for airdrops from innovative projects in the AI + Crypto + Post-Quantum ecosystem.
 
-## Deployment
+## Features
 
-Your project is live at:
+- **Wallet Connection**: Secure integration with Pi wallets
+- **Token Deposits**: Smart contract-based token locking
+- **Airdrop Distribution**: Transparent and automated distributions
+- **Project Dashboard**: Showcase upcoming projects
+- **User Dashboard**: Track deposits and eligibility
+- **AI Integration**: Fraud detection and project curation
+- **Post-Quantum Security**: Future-proof cryptographic standards
 
-**[https://vercel.com/martinlutherupa1-gmailcoms-projects/v0-pi-network-launchpad](https://vercel.com/martinlutherupa1-gmailcoms-projects/v0-pi-network-launchpad)**
+## Tech Stack
 
-## Build your app
+- **Frontend**: React + TypeScript + TailwindCSS
+- **Backend**: Node.js + Express
+- **Smart Contracts**: Rust (Soroban) on Pi Network
+- **Database**: PostgreSQL + IPFS
+- **AI**: Python (scikit-learn, TensorFlow)
+- **Security**: Post-Quantum Cryptography (Kyber, NTRU)
 
-Continue building your app on:
+## Tokenomics
 
-**[https://v0.app/chat/projects/IOHRzjsdlCM](https://v0.app/chat/projects/IOHRzjsdlCM)**
+- **Total Supply**: 2,100,000,000,000,000 PNL (2100 trillion)
+- **Distribution**:
+  - 50% Community Rewards
+  - 20% Team & Advisors
+  - 20% Liquidity
+  - 10% Marketing
 
-## How It Works
+## Getting Started
 
-1. Create and modify your project using [v0.app](https://v0.app)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+### Prerequisites
+
+- Node.js 16+
+- Rust 1.60+
+- Python 3.8+
+
+### Installation
+
+1. Clone the repository
+2. Install frontend dependencies:
+   ```bash
+   cd frontend
+   npm install
+   ```
+3. Install backend dependencies:
+   ```bash
+   cd backend
+   npm install
+   ```
+4. Build smart contracts:
+   ```bash
+   cd contracts
+   cargo build
+   ```
+
+### Running the Application
+
+1. Start the backend:
+   ```bash
+   cd backend
+   npm start
+   ```
+2. Start the frontend:
+   ```bash
+   cd frontend
+   npm start
+   ```
+
+## Project Structure
+
+```
+pi-network-launchpad/
+├── frontend/          # React application
+├── backend/           # Node.js server
+├── contracts/         # Smart contracts
+├── ai/               # AI models
+├── docs/             # Documentation
+├── whitepaper/       # Tokenomics white paper
+└── README.md
+```
+
+## Contributing
+
+Please read [CONTRIBUTING.md](docs/contributing.md) for details on our code of conduct and the process for submitting pull requests.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## White Paper
+
+Read the full white paper: [Pi-Network-Launchpad White Paper](whitepaper/Pi-Network-Launchpad-Whitepaper.md)
+
+## Contact
+
+For questions or support, please open an issue on GitHub.
