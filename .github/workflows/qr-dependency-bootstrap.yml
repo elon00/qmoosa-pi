@@ -1,0 +1,45 @@
+name: Temporary QR Dependency Bootstrap
+
+on:
+  push:
+    branches: [global-ui-ux-excellence]
+    paths:
+      - ".github/workflows/qr-dependency-bootstrap.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: global-ui-ux-excellence
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install QR dependencies
+        run: |
+          pnpm add qrcode@latest --save-exact
+          pnpm add -D @types/qrcode@latest --save-exact
+          pnpm audit --audit-level high
+
+      - name: Commit lockfile
+        run: |
+          git config user.name "Qmoosa Pi Automation"
+          git config user.email "actions@users.noreply.github.com"
+          git add package.json pnpm-lock.yaml
+          if git diff --cached --quiet; then
+            echo "No changes"
+          else
+            git commit -m "feat: add audited QR code dependency [skip ci]"
+            git push origin HEAD:global-ui-ux-excellence
+          fi
