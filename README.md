@@ -1,5 +1,5 @@
 # QMOOSA PI: AI AGENTIC LAUNCHPAD & CONWAY AUTOMATON PLATFORM
-### Production-Ready Web 4.0 Infrastructure for 60M+ Pi Network Pioneers × x402 v2 Bazaar Protocol
+### Production-hardening candidate for a Pi-native AI Agentic & Conway Automaton platform
 
 [![Production DApp](https://img.shields.io/badge/Live%20DApp-GitHub%20Pages%20Production-success.svg)](https://elon00.github.io/pi-network-launchpad/)
 [![Pi Network](https://img.shields.io/badge/Pi%20Network-SDK%202.0%20Verified-6B46C1.svg)](https://developers.minepi.com)
@@ -10,17 +10,17 @@
 
 ---
 
-## 🌐 Live Production Weblinks & Protocol Catalogs
+## 🌐 Environments & Protocol Assets
 
 | Environment / Service | Verified Live URL | Status | Description |
 | :--- | :--- | :---: | :--- |
 | **Primary Production DApp** | [https://elon00.github.io/pi-network-launchpad/](https://elon00.github.io/pi-network-launchpad/) | 🟢 Live | Institutional 5-tab responsive Next.js application |
-| **Pi Browser Deep-Link** | `pi://qmoosa.pinet.com` | 🟢 Ready | Native mobile experience inside official Pi Browser |
-| **PiNet Universal URL** | `https://qmoosa.pinet.com` | 🟢 Ready | Universal Web2/Web3 sharing gateway |
+| **Pi Browser Deep-Link** | `pi://qmoosa.pinet.com` | 🟡 Portal-dependent | Native mobile experience inside official Pi Browser |
+| **PiNet Universal URL** | `https://qmoosa.pinet.com` | 🟡 Listing-dependent | Universal Web2/Web3 sharing gateway |
 | **x402 Bazaar Catalog** | [/.well-known/x402-bazaar.json](https://elon00.github.io/pi-network-launchpad/.well-known/x402-bazaar.json) | 🟢 200 OK | Machine-readable RFC discovery catalog |
 | **x402 Root Alias** | [/x402-bazaar.json](https://elon00.github.io/pi-network-launchpad/x402-bazaar.json) | 🟢 200 OK | Direct root alias bypassing dot-directory filters |
 | **Pi Ecosystem Manifest** | [/.well-known/pi.toml](https://elon00.github.io/pi-network-launchpad/.well-known/pi.toml) | 🟢 200 OK | Official Pi Network ecosystem and token discovery file |
-| **Domain Validation Key** | [/validation-key.txt](https://elon00.github.io/pi-network-launchpad/validation-key.txt) | 🟢 200 OK | Pi Developer Portal domain ownership proof |
+| **Domain Validation File** | [/validation-key.txt](https://elon00.github.io/pi-network-launchpad/validation-key.txt) | 🟡 Present | Developer Portal ownership verification still required |
 | **Technical White Paper** | [QMOOSA_PI_WHITEPAPER.md](./whitepaper/QMOOSA_PI_WHITEPAPER.md) | 🟢 Canonical | Canonical protocol & economic white paper |
 | **Global Marketing Strategy** | [GLOBAL_MARKETING_STRATEGY.md](./docs/GLOBAL_MARKETING_STRATEGY.md) | 🟢 Active | Institutional GTM, viral loops & Pioneer funnels |
 
@@ -36,9 +36,9 @@ While legacy Web3 launchpads are plagued by predatory tokenomics, fabricated APY
 - **For Autonomous AI Agents & Machine Economies**: An open, machine-readable gateway compliant with the **x402 v2 Bazaar Protocol**, enabling cross-chain AI agents to discover, invoke, and settle computational workflows using standard HTTP 402 micro-payments.
 
 ### Core Engineering Principles
-1. **Mathematical Reality over Fluff**: Every Conway simulation step follows deterministic B3/S23 transition rules. Every state is checkpointed with a SHA-256 digest and signed with NIST-standardized Post-Quantum cryptography.
-2. **Absolute Pi Network Compliance**: 100% of user-facing transactions in the Pi Browser settle in native Pi coins via the official Pi SDK 2.0. No unauthorized third-party logins, fiat ramps, or external redirects.
-3. **Dual Settlement Equivalence**: Human Pioneers settle through Pi U2A payment handshakes; autonomous machine agents settle through x402 HTTP 402 challenges.
+1. **Mathematical Reality over Fluff**: Every Conway simulation step follows deterministic B3/S23 transition rules. Every state can be checkpointed with a SHA-256 digest. A real ML-DSA/ML-KEM provider remains a production requirement; current integrity receipts must not be represented as PQC signatures.
+2. **Pi-first Mainnet posture**: the intended Pi Browser production flow uses Pi authentication and Pi payments; final compliance depends on Developer Portal configuration, wallet approvals, domain verification and review.
+3. **Isolated experimental settlement**: Pi U2A is the Mainnet-critical path. External x402 settlement remains disabled by default until a real verifier is configured and must stay separate from the Pi Browser flow.
 
 ---
 
@@ -102,21 +102,21 @@ While legacy Web3 launchpads are plagued by predatory tokenomics, fabricated APY
 
 ---
 
-## ♾️ Unlimited Elastic Token Supply Model (`UNCAPPED_ELASTIC`)
+## ♾️ Experimental Elastic Token Research (`UNCAPPED_ELASTIC`)
 
-Qmoosa Pi replaces obsolete fixed token supplies with an **Uncapped Algorithmic Elastic Supply Policy** governed by computational demand and verifiable work:
+The repository contains an **experimental** uncapped elastic tokenomics model for research. It is not a requirement for Pi Mainnet and should remain outside the Mainnet-critical payment path:
 
 $$\mathcal{S}_{t+1} = \mathcal{S}_t + \mathcal{M}_{\text{work}}(t) - \mathcal{B}_{\text{settle}}(t)$$
 
 - **Proof-of-Computation Minting ($\mathcal{M}_{\text{work}}$)**: Tokens are algorithmically generated exclusively when verifiable Conway simulation cycles or AI agent inferences are executed and committed to the state ledger.
-- **Continuous Settlement Burning ($\mathcal{B}_{\text{settle}}$)**: Exactly 40% of all Pi U2A platform fees, project registration fees (0.5 PI), and x402 settlements are permanently burned from circulation.
+- **Settlement burn model ($\mathcal{B}_{\text{settle}}$)**: research-only economic simulation. Do not claim real burns until implemented and independently verifiable.
 - **Economic Equilibrium**: Supply dynamically expands during peak computational utilization to prevent gas spikes, and contracts during high-settlement epochs, establishing algorithmic equilibrium without speculative hoarding.
 
 ---
 
 ## 🛡️ Post-Quantum Cryptographic Standards (PQC)
 
-Quantum supremacy threatens legacy cryptography (RSA, ECDSA, Ed25519) via Shor's algorithm. Qmoosa Pi deploys an application-layer post-quantum cryptographic security envelope conforming to NIST standards:
+Quantum supremacy threatens legacy cryptography (RSA, ECDSA, Ed25519) via Shor's algorithm. Qmoosa Pi is designed for an application-layer post-quantum security adapter. Production ML-DSA/ML-KEM signing is **not yet enabled**; NIST algorithms below are target standards:
 
 | Security Layer | Standard Algorithm | Key Size / Parameter | Primary Function |
 | :--- | :--- | :--- | :--- |
@@ -136,10 +136,10 @@ Quantum supremacy threatens legacy cryptography (RSA, ECDSA, Ed25519) via Shor's
 - Full interactive 25×25 toroidal canvas with B3/S23 Conway rules.
 - Canonical presets: *Glider (c/4 diagonal)*, *Pulsar (period 3 oscillator)*, *LWSS (spaceship)*, and *Randomize*.
 - Deterministic SHA-256 state hashing updated in real-time on every generation step.
-- 1-click **ML-DSA-65 Post-Quantum Attestation** generating cryptographically verified execution receipts.
+- PQC-ready integrity receipt flow; real ML-DSA production signing remains a separate implementation gate.
 
 ### 3. 03 Multi-Model AI Agent Orchestrator
-- Live multi-model chat interface with 4 specialized autonomous personas:
+- Agentic chat interface with 4 specialized personas; production multi-model provider routing is still to be connected server-side:
   - 🧬 **Automata Architect**: Designs Conway rulesets, oscillators, and glider guns.
   - 🛡️ **PQC Security Officer**: Validates quantum-resistance envelopes against NIST benchmarks.
   - 🌐 **Pi Platform Navigator**: Guides Pioneers through Pi SDK 2.0 integration and U2A payment lifecycles.
@@ -206,14 +206,14 @@ curl -i -X POST http://localhost:5000/api/v1/x402/agent/action \
 
 ---
 
-## 📜 Compliance & Mainnet Listing Guarantee
+## 📜 Compliance & Mainnet Listing Readiness
 
-Qmoosa Pi has been architected from day one to guarantee 100% compliance with the **Pi Network Mainnet Listing Guidelines**:
+Qmoosa Pi is being hardened toward the **Pi Network Mainnet Listing Guidelines**. Final listing/compliance cannot be guaranteed by code alone and requires Pi Developer Portal steps and Pi review:
 - ✅ **Pi-Only Authentication**: Strictly enforces `window.Pi.authenticate(['username', 'payments'])`.
 - ✅ **Pi-Only Payments in Pi Browser**: All user-facing payments settle in native Pi coins; non-Pi tokens are disabled in the primary flow.
 - ✅ **Zero Fraudulent Promises**: No deceptive ROI guarantees, fake investor testimonials, or unverified claims.
-- ✅ **Domain Ownership Proven**: Served from verified domain with `validation-key.txt`.
-- ✅ **Enclosed Network Safe**: No redirection to external Web2 login systems or unauthorized third-party services.
+- 🟡 **Domain verification**: validation file is present; Developer Portal verification is still required.
+- 🟡 **External integrations**: experimental x402/non-Pi paths must remain disabled or isolated from the Pi Browser Mainnet user flow.
 
 ---
 
@@ -221,3 +221,10 @@ Qmoosa Pi has been architected from day one to guarantee 100% compliance with th
 
 Distributed under the **MIT License**.  
 Engineered with pride for the global **Pi Network Pioneer Community** and autonomous **Web 4.0 Machine Agents**.
+
+
+---
+
+## Production Readiness
+
+See [docs/PRODUCTION_READINESS.md](./docs/PRODUCTION_READINESS.md) for the release-gate matrix and [SECURITY.md](./SECURITY.md) for the security model. The Pi-native core and experimental modules are deliberately separated so Mainnet readiness is not blocked by research features.
