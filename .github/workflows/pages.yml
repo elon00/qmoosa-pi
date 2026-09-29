@@ -38,7 +38,8 @@ jobs:
       - name: Build static site
         env:
           GITHUB_PAGES: "true"
-          NEXT_PUBLIC_PI_SANDBOX: "false"
+          NEXT_PUBLIC_PI_SANDBOX: "true"
+          NEXT_PUBLIC_PI_BACKEND_URL: "https://qmoosa-pi-backend.onrender.com"
         run: pnpm run build
 
       - name: Disable Jekyll
