@@ -4,7 +4,10 @@
   "private": true,
   "scripts": {
     "build": "next build",
+    "deploy": "powershell -ExecutionPolicy Bypass -File ./deploy-qmoosa-pi.ps1",
     "dev": "next dev",
+    "doctor": "node scripts/qmoosa-doctor.js",
+    "finish": "node scripts/one-click-finisher.js",
     "lint": "next lint",
     "start": "next start"
   },
