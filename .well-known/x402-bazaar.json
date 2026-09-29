@@ -1,0 +1,15 @@
+{
+  "x402Version": 2,
+  "service": "Qmoosa Pi Platform",
+  "ready": false,
+  "status": "experimental-disabled",
+  "note": "External x402 settlement is disabled until a real verifier/facilitator is configured. Pi Browser payments use the Pi SDK flow.",
+  "provider": {
+    "name": "Qmoosa Pi",
+    "network": "pi-testnet",
+    "paymentScheme": "pi-u2a-primary",
+    "piWallet": null,
+    "pqcStatus": "adapter-ready; real ML-DSA/ML-KEM production signing not enabled"
+  },
+  "items": []
+}
