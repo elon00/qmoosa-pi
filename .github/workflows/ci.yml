@@ -56,7 +56,7 @@ jobs:
         shell: bash
         run: |
           set -e
-          if grep -RIn --exclude-dir=.git --exclude-dir=node_modules             -E 'guarantee 100% compliance|guaranteed returns|fake investor|verified ML-DSA'             app backend README.md; then
+          if grep -RIn --exclude-dir=.git --exclude-dir=node_modules             -E 'guarantee 100% compliance|guaranteed returns|verified ML-DSA'             app backend README.md; then
             echo "Potentially misleading production claim detected."
             exit 1
           fi

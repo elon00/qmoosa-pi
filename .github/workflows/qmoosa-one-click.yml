@@ -1,0 +1,125 @@
+name: Qmoosa Pi One-Click Finisher
+
+on:
+  workflow_dispatch:
+    inputs:
+      deploy_pages:
+        description: "Build and publish GitHub Pages"
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: qmoosa-pi-one-click-finisher
+  cancel-in-progress: true
+
+jobs:
+  doctor:
+    name: Project Doctor
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Repository doctor
+        run: node scripts/qmoosa-doctor.js
+
+      - name: TypeScript
+        run: pnpm exec tsc --noEmit
+
+      - name: Production build
+        env:
+          GITHUB_PAGES: "true"
+          NEXT_PUBLIC_PI_SANDBOX: "true"
+        run: pnpm run build
+
+      - name: Backend syntax
+        run: npm --prefix backend test
+
+      - name: Secret hygiene
+        shell: bash
+        run: |
+          set -e
+          if git ls-files | grep -E '(^|/)\.env$|\.pem$|\.key$|secret.*\.json$'; then
+            echo "::error::Tracked secret-like file detected"
+            exit 1
+          fi
+
+      - name: Production claim guard
+        shell: bash
+        run: |
+          set -e
+          if grep -RIn --exclude-dir=.git --exclude-dir=node_modules             -E 'guarantee 100% compliance|guaranteed returns|verified ML-DSA'             app backend README.md; then
+            echo "::error::Potentially misleading production claim detected"
+            exit 1
+          fi
+
+      - name: Dependency audit
+        continue-on-error: true
+        run: pnpm audit --audit-level high
+
+      - name: Backend dependency audit
+        continue-on-error: true
+        run: npm --prefix backend audit --audit-level=high
+
+      - name: Prepare Pages artifact
+        if: ${{ inputs.deploy_pages }}
+        run: touch out/.nojekyll
+
+      - name: Upload Pages artifact
+        if: ${{ inputs.deploy_pages }}
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./out
+
+      - name: Readiness summary
+        shell: bash
+        run: |
+          {
+            echo "## Qmoosa Pi One-Click Finisher"
+            echo ""
+            echo "### Automated checks completed"
+            echo "- Repository doctor"
+            echo "- TypeScript"
+            echo "- Next.js production export"
+            echo "- Backend validation"
+            echo "- Secret hygiene"
+            echo "- Production-claim guard"
+            echo "- Dependency audits"
+            echo ""
+            echo "### External gates that automation cannot impersonate"
+            echo "- GitHub Pages repository setting must allow Actions publishing"
+            echo "- Pi Developer Portal registration/domain verification"
+            echo "- Real PI_API_KEY stored in hosting secrets"
+            echo "- Pi Browser Testnet/Mainnet payment confirmation"
+            echo "- Mainnet wallet/multisig/listing approvals"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  pages:
+    name: Publish GitHub Pages
+    if: ${{ inputs.deploy_pages && needs.doctor.result == 'success' }}
+    needs: doctor
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
