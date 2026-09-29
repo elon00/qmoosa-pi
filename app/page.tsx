@@ -10,15 +10,102 @@ import { Wallet, Shield, Users, Star, Lock, TrendingUp, Cpu, ArrowRight, CheckCi
 export default function PiNetworkLaunchpad() {
   const [isWalletConnected, setIsWalletConnected] = useState(false)
   const [depositAmount, setDepositAmount] = useState("")
+  const [accessToken, setAccessToken] = useState<string | null>(null)
+  const [status, setStatus] = useState("")
+  const [isPaymentLoading, setIsPaymentLoading] = useState(false)
 
-  const handleConnectWallet = () => {
-    setIsWalletConnected(!isWalletConnected)
+  const backendUrl = process.env.NEXT_PUBLIC_PI_BACKEND_URL || "http://localhost:5000"
+  const sandbox = process.env.NEXT_PUBLIC_PI_SANDBOX !== "false"
+
+  const handleConnectWallet = async () => {
+    try {
+      if (!window.Pi) throw new Error("Pi SDK is not available")
+      window.Pi.init({ version: "2.0", sandbox })
+
+      const auth = await window.Pi.authenticate(["username", "payments"], async (payment: any) => {
+        const paymentId = payment?.identifier
+        const txid = payment?.transaction?.txid
+        if (!paymentId || !txid) return
+
+        await fetch(`${backendUrl}/api/payments/incomplete`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ paymentId, txid }),
+        })
+      })
+
+      const verify = await fetch(`${backendUrl}/api/verify`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${auth.accessToken}` },
+      })
+      if (!verify.ok) throw new Error("Server could not verify Pioneer")
+
+      setAccessToken(auth.accessToken)
+      setIsWalletConnected(true)
+      setStatus(`Authenticated as ${auth.user.username}`)
+    } catch (error) {
+      console.error(error)
+      setAccessToken(null)
+      setIsWalletConnected(false)
+      setStatus(error instanceof Error ? error.message : "Pi authentication failed")
+    }
   }
 
-  const handleDeposit = () => {
-    if (depositAmount && isWalletConnected) {
-      alert(`Depositing ${depositAmount} PI tokens to smart contract`)
-      setDepositAmount("")
+  const handleDeposit = async () => {
+    const amount = Number(depositAmount)
+    if (!window.Pi || !accessToken || !isWalletConnected || !Number.isFinite(amount) || amount <= 0) return
+
+    setIsPaymentLoading(true)
+    setStatus("Starting Pi payment…")
+
+    try {
+      await window.Pi.createPayment(
+        {
+          amount,
+          memo: "Pi Network Launchpad deposit",
+          metadata: { feature: "launchpad_deposit" },
+        },
+        {
+          onReadyForServerApproval: async (paymentId: string) => {
+            const res = await fetch(`${backendUrl}/api/payments/approve`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken}`,
+              },
+              body: JSON.stringify({ paymentId }),
+            })
+            if (!res.ok) throw new Error("Server approval failed")
+          },
+          onReadyForServerCompletion: async (paymentId: string, txid: string) => {
+            const res = await fetch(`${backendUrl}/api/payments/complete`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken}`,
+              },
+              body: JSON.stringify({ paymentId, txid }),
+            })
+            if (!res.ok) throw new Error("Server completion failed")
+            setStatus(`Payment complete: ${txid}`)
+            setDepositAmount("")
+            setIsPaymentLoading(false)
+          },
+          onCancel: () => {
+            setStatus("Payment cancelled")
+            setIsPaymentLoading(false)
+          },
+          onError: (error: Error) => {
+            console.error(error)
+            setStatus(error.message || "Pi payment failed")
+            setIsPaymentLoading(false)
+          },
+        },
+      )
+    } catch (error) {
+      console.error(error)
+      setStatus(error instanceof Error ? error.message : "Pi payment failed")
+      setIsPaymentLoading(false)
     }
   }
 
@@ -232,11 +319,11 @@ export default function PiNetworkLaunchpad() {
                 </div>
                 <Button
                   onClick={handleDeposit}
-                  disabled={!isWalletConnected || !depositAmount}
+                  disabled={!isWalletConnected || !depositAmount || isPaymentLoading}
                   className="w-full text-lg py-3"
                   size="lg"
                 >
-                  {!isWalletConnected ? "Connect Wallet to Continue" : "Deposit & Start Earning"}
+                  {!isWalletConnected ? "Connect Wallet to Continue" : isPaymentLoading ? "Processing…" : "Deposit & Start Earning"}
                 </Button>
                 {!isWalletConnected && (
                   <Button onClick={handleConnectWallet} variant="outline" className="w-full bg-transparent">
@@ -249,6 +336,12 @@ export default function PiNetworkLaunchpad() {
           </div>
         </div>
       </section>
+
+      {status && (
+        <div className="container mx-auto px-4 pb-4">
+          <p className="text-center text-sm text-muted-foreground" role="status">{status}</p>
+        </div>
+      )}
 
       {/* Features Section */}
       <section className="py-20 px-4">
@@ -340,7 +433,7 @@ export default function PiNetworkLaunchpad() {
                   className="w-full"
                   size="lg"
                 >
-                  {!isWalletConnected ? "Connect Wallet First" : "Deposit Tokens"}
+                  {!isWalletConnected ? "Connect Wallet First" : isPaymentLoading ? "Processing…" : "Deposit Tokens"}
                 </Button>
               </CardContent>
             </Card>
