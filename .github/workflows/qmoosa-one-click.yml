@@ -71,11 +71,9 @@ jobs:
           fi
 
       - name: Dependency audit
-        continue-on-error: true
         run: pnpm audit --audit-level high
 
       - name: Backend dependency audit
-        continue-on-error: true
         run: npm --prefix backend audit --audit-level=high
 
       - name: Prepare Pages artifact

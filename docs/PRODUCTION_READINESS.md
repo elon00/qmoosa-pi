@@ -8,11 +8,12 @@ Status legend: **DONE**, **CODE-READY**, **EXTERNAL**, **PENDING**.
 | Pi SDK loading | CODE-READY | Validate inside registered Pi app |
 | Pi authentication | CODE-READY | Verify real Pioneer token via /v2/me |
 | Pi U2A payments | CODE-READY | Execute real Sandbox/Testnet and production transaction |
+| Backend public runtime | PENDING | Deploy Express backend and wire NEXT_PUBLIC_PI_BACKEND_URL into the frontend build |
 | Backend API key | EXTERNAL | Add through hosting secrets |
 | Domain validation file | CODE-READY | Complete Developer Portal ownership verification |
 | App wallet / multisig | EXTERNAL | Complete Pi Developer Portal workflow |
-| Conway B3/S23 engine | CODE-READY | Add deterministic unit tests and persistent run records |
-| AI agent UI | CODE-READY | Connect real model providers through server-side adapters |
+| Conway B3/S23 engine | CODE-READY | Deterministic tests added; persistent run records still required |
+| Agent advisor | CODE-READY | Rules-based advisor is explicit; connect real model providers before claiming production AI |
 | Multi-model routing | PENDING | Add provider abstraction, policy/rate limits and fallback |
 | PQC architecture | CODE-READY | Real ML-DSA/ML-KEM provider still required |
 | x402 | DISABLED | Enable only after real settlement verifier is integrated |
@@ -21,7 +22,7 @@ Status legend: **DONE**, **CODE-READY**, **EXTERNAL**, **PENDING**.
 | Cache/queue | PENDING | Redis/managed queue for rate limits and jobs |
 | Observability | PENDING | logs, metrics, alerts, uptime checks |
 | Backups/restore | PENDING | automated backup and restore drill |
-| CI build/typecheck | DONE | GitHub Actions workflow |
+| CI build/typecheck/tests/audit | DONE | GitHub Actions includes backend regression tests and blocking high-severity dependency audits |
 | Secret hygiene gate | DONE | CI blocks tracked runtime secrets |
 | Mobile/Pi Browser QA | EXTERNAL | Test Android/iOS Pi Browser |
 | Mainnet listing approval | EXTERNAL | Pi review/approval required |
