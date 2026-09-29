@@ -85,3 +85,8 @@ Every UI change should pass:
 ## Future improvements
 
 Before calling the product fully production-grade, add automated browser accessibility checks, Core Web Vitals telemetry, persistent payment/order storage, production monitoring, and real Pi Sandbox/Testnet transaction evidence.
+
+
+## Release verification
+
+The global UI/UX baseline was merged on 2026-09-29. Release verification requires a fresh main-branch CI run, GitHub Pages deployment, and backend deployment after the merge commit.
