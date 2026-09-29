@@ -65,7 +65,14 @@ export default function QmoosaPiApp() {
   const [piStatus, setPiStatus] = useState("Ready to connect with Pi SDK")
   const [depositAmount, setDepositAmount] = useState("1")
   const [isPaymentLoading, setIsPaymentLoading] = useState(false)
-  const [sandboxMode, setSandboxMode] = useState(true)
+  const [sandboxMode, setSandboxMode] = useState<boolean>(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search)
+      if (params.get("sandbox") === "true") return true
+      if (params.get("sandbox") === "false") return false
+    }
+    return process.env.NEXT_PUBLIC_PI_SANDBOX === "true" ? true : false
+  })
 
   // Conway Automaton State
   const [grid, setGrid] = useState<number[][]>(() => createEmptyGrid())
@@ -702,10 +709,14 @@ export default function QmoosaPiApp() {
           <div className="flex items-center space-x-2">
             <button
               onClick={() => setSandboxMode(!sandboxMode)}
-              className="hidden sm:flex text-[11px] font-mono px-2 py-1 rounded border border-slate-700 bg-slate-900/60 text-slate-300 hover:border-purple-500 transition-colors"
+              className={`hidden sm:flex text-[11px] font-mono px-2.5 py-1 rounded border transition-colors ${
+                sandboxMode
+                  ? "border-amber-700/80 bg-amber-950/40 text-amber-300 hover:border-amber-500"
+                  : "border-emerald-500/80 bg-emerald-950/60 text-emerald-300 font-semibold hover:border-emerald-400"
+              }`}
               title="Toggle Pi SDK Sandbox / Mainnet mode"
             >
-              {sandboxMode ? "🧪 Sandbox: ON" : "🌐 Mainnet Mode"}
+              {sandboxMode ? "🧪 Sandbox Mode" : "🌐 Pi Mainnet: LIVE"}
             </button>
 
             <Button

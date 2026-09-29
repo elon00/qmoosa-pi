@@ -46,7 +46,7 @@ jobs:
       - name: Production build
         env:
           GITHUB_PAGES: "true"
-          NEXT_PUBLIC_PI_SANDBOX: "true"
+          NEXT_PUBLIC_PI_SANDBOX: "false"
         run: pnpm run build
 
       - name: Backend syntax

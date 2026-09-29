@@ -63,7 +63,7 @@ async function main() {
 
   // STEP 4: Production Static Export
   log('4/8', 'Compiling Production Static Export (Next.js 14)...');
-  const buildEnv = { ...process.env, GITHUB_PAGES: 'true', NEXT_PUBLIC_PI_SANDBOX: 'true' };
+  const buildEnv = { ...process.env, GITHUB_PAGES: 'true', NEXT_PUBLIC_PI_SANDBOX: 'false' };
   run('pnpm run build', ROOT_DIR, buildEnv);
   
   // Ensure .nojekyll exists
