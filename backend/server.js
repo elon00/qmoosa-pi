@@ -9,8 +9,11 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const PI_API_BASE = process.env.PI_API_BASE || "https://api.minepi.com/v2";
 const PI_API_KEY = process.env.PI_API_KEY;
-const PI_WALLET = process.env.PI_WALLET || "GCZ5K7Q3WMOOSAPIOFFICIALWALLETHACKATHON2026TESTNET";
-const X402_FACILITATOR = process.env.X402_FACILITATOR || "https://x402.org/facilitator";
+const PI_WALLET = process.env.PI_WALLET || null;
+const ENABLE_X402 = process.env.ENABLE_X402 === "true";
+const X402_FACILITATOR = process.env.X402_FACILITATOR || null;
+const X402_VERIFY_URL = process.env.X402_VERIFY_URL || null;
+const X402_VERIFY_TOKEN = process.env.X402_VERIFY_TOKEN || null;
 
 app.use(cors({ origin: process.env.APP_ORIGIN ? process.env.APP_ORIGIN.split(",") : true }));
 app.use(express.json());
@@ -86,20 +89,44 @@ function hashGrid(grid, gen) {
   return crypto.createHash("sha256").update(serialized).digest("hex");
 }
 
-function generatePqcAttestation(hash, subject) {
+function generateIntegrityReceipt(hash, subject) {
   const nonce = crypto.randomBytes(16).toString("hex");
   const timestamp = new Date().toISOString();
-  const rawSignature = crypto.createHmac("sha512", "qmoosa-pi-pqc-salt").update(`${hash}:${subject}:${nonce}:${timestamp}`).digest("hex");
+  const signature = crypto
+    .createHmac("sha512", process.env.INTEGRITY_HMAC_KEY || "development-only-change-me")
+    .update(`${hash}:${subject}:${nonce}:${timestamp}`)
+    .digest("hex");
+
   return {
-    scheme: "ML-DSA-65 (NIST FIPS 204)",
-    kemReference: "ML-KEM-768 (NIST FIPS 203)",
+    scheme: "HMAC-SHA-512 integrity receipt (NOT post-quantum)",
+    pqcStatus: "adapter-ready; real ML-DSA signing is not enabled",
     subject,
     stateHash: hash,
-    signature: `mldsa65_${rawSignature.slice(0, 64)}...${rawSignature.slice(-16)}`,
+    signature,
     nonce,
     timestamp,
     verified: true
   };
+}
+
+async function verifyX402Settlement(req) {
+  if (!ENABLE_X402 || !X402_VERIFY_URL) return { ok: false, reason: "x402_not_configured" };
+
+  const paymentProof = req.headers["x-payment-proof"] || req.headers["x-402-payment"];
+  if (!paymentProof) return { ok: false, reason: "missing_payment_proof" };
+
+  const verifyRes = await fetch(X402_VERIFY_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(X402_VERIFY_TOKEN ? { Authorization: `Bearer ${X402_VERIFY_TOKEN}` } : {})
+    },
+    body: JSON.stringify({ proof: paymentProof })
+  });
+
+  if (!verifyRes.ok) return { ok: false, reason: "verification_failed" };
+  const result = await verifyRes.json().catch(() => ({}));
+  return { ok: result?.verified === true, result };
 }
 
 function requirePiApiKey(res) {
@@ -142,9 +169,9 @@ app.get("/health", (_req, res) => {
     ok: true,
     service: "qmoosa-pi",
     piApiConfigured: Boolean(PI_API_KEY),
-    x402BazaarReady: true,
+    x402BazaarReady: ENABLE_X402 && Boolean(X402_VERIFY_URL),
     conwayEngine: "active",
-    postQuantum: "ML-DSA-65"
+    postQuantum: "adapter-ready; real ML-DSA signing not enabled"
   });
 });
 
@@ -155,7 +182,7 @@ const x402Catalog = {
   x402Version: 2,
   service: "Qmoosa Pi Platform",
   facilitator: X402_FACILITATOR,
-  ready: true,
+  ready: ENABLE_X402 && Boolean(X402_VERIFY_URL),
   catalogRegistration: "A Bazaar-capable facilitator indexes a resource after a conformant paid settlement echoes the bazaar extension.",
   provider: {
     name: "Qmoosa Pi",
@@ -164,10 +191,10 @@ const x402Catalog = {
     paymentScheme: "pi-u2a-and-x402-hybrid",
     network: "pi-testnet",
     piWallet: PI_WALLET,
-    currency: "PI / USDC",
+    currency: ENABLE_X402 ? "external x402 settlement (separate from Pi Browser flow)" : "PI",
     supplyPolicy: "PI_NATIVE_UTILITY",
     conwayEngineVersion: "2.4.0-pqc",
-    pqcProfile: "ML-DSA-65/ML-KEM-768"
+    pqcProfile: "PQC adapter planned; integrity receipts currently HMAC-SHA-512"
   },
   items: [
     {
@@ -266,14 +293,14 @@ app.get("/api/v1/status", (_req, res) => {
     },
     x402: {
       version: 2,
-      bazaarEnabled: true,
+      bazaarEnabled: ENABLE_X402 && Boolean(X402_VERIFY_URL),
       catalog: "/.well-known/x402-bazaar.json",
       facilitator: X402_FACILITATOR
     },
     postQuantum: {
-      dsa: "ML-DSA-65 (NIST FIPS 204)",
-      kem: "ML-KEM-768 (NIST FIPS 203)",
-      status: "research-grade integration"
+      targetDsa: "ML-DSA-65 (NIST FIPS 204)",
+      targetKem: "ML-KEM-768 (NIST FIPS 203)",
+      status: "adapter-ready; production PQC implementation pending"
     }
   });
 });
@@ -281,79 +308,74 @@ app.get("/api/v1/status", (_req, res) => {
 // -------------------------------------------------------------
 // x402 HTTP 402 Payment Challenge & Settlement Handlers
 // -------------------------------------------------------------
-app.post("/api/v1/x402/agent/action", (req, res) => {
-  const paymentProof = req.headers["x-payment-proof"] || req.headers["x-402-payment"];
-  const authHeader = req.headers.authorization || "";
-
-  // If client passes a valid payment token / proof
-  if (paymentProof || authHeader.startsWith("Bearer x402_settled_")) {
-    const proofId = paymentProof || authHeader.replace("Bearer ", "");
-    const goal = req.body?.goal || "Autonomous Agent Coordination";
-    const hash = crypto.createHash("sha256").update(`${goal}:${Date.now()}`).digest("hex");
-    const attestation = generatePqcAttestation(hash, "agent-execution-proof");
-
-    res.setHeader("X-402-Bazaar-Echo", "conformant");
-    return res.status(200).json({
-      success: true,
-      status: "settled",
-      message: "Agent action executed successfully with post-quantum verification",
-      proofId,
-      goal,
-      attestation,
-      bazaarIndexed: true,
-      settlementReceipt: {
-        network: "solana-testnet / pi-hybrid",
-        asset: "USDC / 0.1 PI equivalent",
-        amountPaid: "100000",
-        confirmedAt: new Date().toISOString()
-      }
+app.post("/api/v1/x402/agent/action", async (req, res) => {
+  if (!ENABLE_X402 || !X402_VERIFY_URL) {
+    return res.status(503).json({
+      error: "x402 settlement is disabled until a real verifier is configured",
+      required: ["ENABLE_X402=true", "X402_VERIFY_URL"]
     });
   }
 
-  // Otherwise return standard HTTP 402 Payment Required
-  res.setHeader("WWW-Authenticate", 'x402 realm="Qmoosa Pi Agent Execution", version="2"');
-  res.status(402).json({
-    status: 402,
-    error: "Payment Required",
-    x402Version: 2,
-    service: "Qmoosa AI Agent Execution",
-    catalog: "/.well-known/x402-bazaar.json",
-    accepts: x402Catalog.items[0].accepts,
-    paymentInstruction: "Submit required payment to facilitator or provide valid x402 settlement proof in X-Payment-Proof header."
+  const verification = await verifyX402Settlement(req);
+  if (!verification.ok) {
+    res.setHeader("WWW-Authenticate", 'x402 realm="Qmoosa Pi Agent Execution", version="2"');
+    return res.status(402).json({
+      status: 402,
+      error: "Payment Required",
+      x402Version: 2,
+      service: "Qmoosa AI Agent Execution",
+      catalog: "/.well-known/x402-bazaar.json",
+      accepts: x402Catalog.items[0].accepts
+    });
+  }
+
+  const goal = req.body?.goal || "Autonomous Agent Coordination";
+  const hash = crypto.createHash("sha256").update(`${goal}:${Date.now()}`).digest("hex");
+  const attestation = generateIntegrityReceipt(hash, "agent-execution-proof");
+  res.setHeader("X-402-Bazaar-Echo", "verified");
+  return res.status(200).json({
+    success: true,
+    status: "settled",
+    goal,
+    verification: verification.result,
+    attestation
   });
 });
 
-app.post("/api/v1/x402/conway/step", (req, res) => {
-  const paymentProof = req.headers["x-payment-proof"] || req.headers["x-402-payment"];
-  const authHeader = req.headers.authorization || "";
-
-  if (paymentProof || authHeader.startsWith("Bearer x402_settled_")) {
-    automatonGrid = stepGrid(automatonGrid);
-    automatonGeneration += 1;
-    const stateHash = hashGrid(automatonGrid, automatonGeneration);
-    const attestation = generatePqcAttestation(stateHash, `conway-generation-${automatonGeneration}`);
-
-    res.setHeader("X-402-Bazaar-Echo", "conformant");
-    return res.status(200).json({
-      success: true,
-      status: "settled",
-      generation: automatonGeneration,
-      stateHash,
-      attestation,
-      liveCells: automatonGrid.flat().filter(Boolean).length,
-      bazaarIndexed: true
+app.post("/api/v1/x402/conway/step", async (req, res) => {
+  if (!ENABLE_X402 || !X402_VERIFY_URL) {
+    return res.status(503).json({
+      error: "x402 settlement is disabled until a real verifier is configured",
+      required: ["ENABLE_X402=true", "X402_VERIFY_URL"]
     });
   }
 
-  res.setHeader("WWW-Authenticate", 'x402 realm="Qmoosa Conway Automaton Evolution", version="2"');
-  res.status(402).json({
-    status: 402,
-    error: "Payment Required",
-    x402Version: 2,
-    service: "Qmoosa Conway Automaton Evolution Step",
-    catalog: "/.well-known/x402-bazaar.json",
-    accepts: x402Catalog.items[1].accepts,
-    paymentInstruction: "Submit 0.05 USDC / 0.05 PI equivalent via x402 to execute deterministic cellular automaton step."
+  const verification = await verifyX402Settlement(req);
+  if (!verification.ok) {
+    res.setHeader("WWW-Authenticate", 'x402 realm="Qmoosa Conway Automaton Evolution", version="2"');
+    return res.status(402).json({
+      status: 402,
+      error: "Payment Required",
+      x402Version: 2,
+      service: "Qmoosa Conway Automaton Evolution Step",
+      catalog: "/.well-known/x402-bazaar.json",
+      accepts: x402Catalog.items[1].accepts
+    });
+  }
+
+  automatonGrid = stepGrid(automatonGrid);
+  automatonGeneration += 1;
+  const stateHash = hashGrid(automatonGrid, automatonGeneration);
+  const attestation = generateIntegrityReceipt(stateHash, `conway-generation-${automatonGeneration}`);
+  res.setHeader("X-402-Bazaar-Echo", "verified");
+  return res.status(200).json({
+    success: true,
+    status: "settled",
+    generation: automatonGeneration,
+    stateHash,
+    attestation,
+    liveCells: automatonGrid.flat().filter(Boolean).length,
+    verification: verification.result
   });
 });
 
@@ -379,7 +401,7 @@ app.post("/api/v1/conway/step", (req, res) => {
     automatonGeneration += 1;
   }
   const stateHash = hashGrid(automatonGrid, automatonGeneration);
-  const attestation = generatePqcAttestation(stateHash, `conway-gen-${automatonGeneration}`);
+  const attestation = generateIntegrityReceipt(stateHash, `conway-gen-${automatonGeneration}`);
 
   res.json({
     success: true,
@@ -437,7 +459,7 @@ app.post("/api/v1/ai/chat", (req, res) => {
   }
 
   const hash = crypto.createHash("sha256").update(`${message}:${Date.now()}`).digest("hex");
-  const attestation = generatePqcAttestation(hash, `ai-agent-${agentType}`);
+  const attestation = generateIntegrityReceipt(hash, `ai-agent-${agentType}`);
 
   res.json({
     agent: agentName,
