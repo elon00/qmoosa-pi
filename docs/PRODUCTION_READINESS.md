@@ -8,7 +8,7 @@ Status legend: **DONE**, **CODE-READY**, **EXTERNAL**, **PENDING**.
 | Pi SDK loading | CODE-READY | Validate inside registered Pi app |
 | Pi authentication | CODE-READY | Verify real Pioneer token via /v2/me |
 | Pi U2A payments | CODE-READY | Execute real Sandbox/Testnet and production transaction |
-| Backend public runtime | PENDING | Deploy Express backend and wire NEXT_PUBLIC_PI_BACKEND_URL into the frontend build |
+| Backend public runtime | DONE | Render backend deployed; Pages build wired to public backend URL in Sandbox mode |
 | Backend API key | EXTERNAL | Add through hosting secrets |
 | Domain validation file | CODE-READY | Complete Developer Portal ownership verification |
 | App wallet / multisig | EXTERNAL | Complete Pi Developer Portal workflow |
