@@ -36,15 +36,25 @@ app.use(cors({
 app.use(express.json({ limit: "64kb" }));
 
 const rateWindow = new Map();
+let lastRateSweep = 0;
 function rateLimit({ windowMs = 60_000, max = 120 } = {}) {
   return (req, res, next) => {
     const key = req.ip || req.socket?.remoteAddress || "unknown";
     const now = Date.now();
+
+    if (now - lastRateSweep >= windowMs) {
+      for (const [clientKey, entry] of rateWindow.entries()) {
+        if (now - entry.startedAt >= windowMs) rateWindow.delete(clientKey);
+      }
+      lastRateSweep = now;
+    }
+
     const current = rateWindow.get(key);
     if (!current || now - current.startedAt >= windowMs) {
       rateWindow.set(key, { startedAt: now, count: 1 });
       return next();
     }
+
     current.count += 1;
     if (current.count > max) {
       return res.status(429).json({ error: "Too many requests" });
