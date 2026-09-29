@@ -3,7 +3,7 @@
     Qmoosa Pi: 1-Click Project Finisher & Production Deployer for Windows
 .DESCRIPTION
     Executes repository doctor, type checks, backend tests, production static build,
-    git synchronization, and GitHub Pages force deployment in one single click.
+    safe local build, type, backend, and artifact verification in one single click.
 #>
 
 [CmdletBinding()]
@@ -26,8 +26,8 @@ node "$RepoRoot\scripts\one-click-finisher.js"
 
 if ($LASTEXITCODE -eq 0) {
     Write-Host ""
-    Write-Host "[SUCCESS] Qmoosa Pi has finished all build, test, and deployment gates." -ForegroundColor Green
-    Write-Host "View live at: https://elon00.github.io/qmoosa-pi/" -ForegroundColor Cyan
+    Write-Host "[SUCCESS] Qmoosa Pi passed all local machine-verifiable checks." -ForegroundColor Green
+    Write-Host "GitHub deployment is handled separately by the reviewable Actions workflow." -ForegroundColor Cyan
 } else {
     Write-Host ""
     Write-Host "[ERROR] One-Click Finisher failed with exit code $LASTEXITCODE." -ForegroundColor Red
