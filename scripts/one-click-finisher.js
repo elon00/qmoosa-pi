@@ -78,14 +78,15 @@ async function main() {
     'out/.nojekyll',
     'out/.well-known/x402-bazaar.json',
     'out/.well-known/pi.toml',
-    'out/validation-key.txt'
+    'out/validation-key.txt',
+    'out/pi-app-validation.txt'
   ];
   for (const f of requiredFiles) {
     if (!fs.existsSync(path.join(ROOT_DIR, f))) {
       throw new Error(`Missing expected production export: ${f}`);
     }
   }
-  success('All required RFC discovery and manifest files verified in out/');
+  success('All required RFC discovery, manifest, and validation files verified in out/');
 
   // STEP 6: Push Code Updates to Main Branch
   log('6/8', 'Synchronizing Main Branch with GitHub...');
@@ -122,6 +123,7 @@ async function main() {
   log('8/8', 'Verifying Live Production Endpoints...');
   const endpoints = [
     `${PAGES_BASE_URL}/`,
+    `${PAGES_BASE_URL}/pi-app-validation.txt`,
     `${PAGES_BASE_URL}/.well-known/x402-bazaar.json`,
     `${PAGES_BASE_URL}/.well-known/pi.toml`,
     `${PAGES_BASE_URL}/validation-key.txt`

@@ -8,6 +8,7 @@ const checks = [
   ["Production readiness document", () => fs.existsSync("docs/PRODUCTION_READINESS.md")],
   ["Security policy", () => fs.existsSync("SECURITY.md")],
   ["Pi validation file", () => fs.existsSync("public/validation-key.txt")],
+  ["Pi App Studio validation file", () => fs.existsSync("public/pi-app-validation.txt")],
   ["x402 discovery file", () => fs.existsSync("public/.well-known/x402-bazaar.json")],
   ["GitHub Pages workflow", () => fs.existsSync(".github/workflows/pages.yml")],
 ];
