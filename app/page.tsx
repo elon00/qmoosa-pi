@@ -104,6 +104,8 @@ export default function QmoosaPiApp() {
   const [submissionSuccess, setSubmissionSuccess] = useState(false)
 
   const backendUrl = process.env.NEXT_PUBLIC_PI_BACKEND_URL || "http://localhost:5000"
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ""
+  const staticUrl = (path: string) => `${basePath}${path}`
 
   // -------------------------------------------------------------
   // Conway Grid Helpers
@@ -616,7 +618,7 @@ export default function QmoosaPiApp() {
         <div className="hidden sm:flex items-center space-x-3 text-purple-400 font-mono">
           <span>Official Wallet: GCZ5...TESTNET</span>
           <span className="text-purple-700">|</span>
-          <a href="/.well-known/x402-bazaar.json" target="_blank" className="hover:text-purple-200 underline flex items-center gap-1">
+          <a href={staticUrl("/.well-known/x402-bazaar.json")} target="_blank" className="hover:text-purple-200 underline flex items-center gap-1">
             x402-bazaar.json <ExternalLink className="w-3 h-3" />
           </a>
         </div>
@@ -1338,7 +1340,7 @@ export default function QmoosaPiApp() {
               </div>
               <div className="flex items-center space-x-2">
                 <a
-                  href="/.well-known/x402-bazaar.json"
+                  href={staticUrl("/.well-known/x402-bazaar.json")}
                   target="_blank"
                   className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-mono bg-emerald-950/40 border border-emerald-600 text-emerald-300 hover:bg-emerald-900/40"
                 >
@@ -1576,7 +1578,7 @@ export default function QmoosaPiApp() {
 
                 <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-xs font-mono">
                   <span className="text-slate-400">Domain Verification:</span>
-                  <a href="/validation-key.txt" target="_blank" className="text-purple-300 underline hover:text-purple-200">
+                  <a href={staticUrl("/validation-key.txt")} target="_blank" className="text-purple-300 underline hover:text-purple-200">
                     validation-key.txt
                   </a>
                 </div>
@@ -1594,13 +1596,13 @@ export default function QmoosaPiApp() {
             <span>• Built for Pioneers & Autonomous Machine Agents</span>
           </div>
           <div className="flex items-center space-x-4 text-slate-400 font-mono text-[11px]">
-            <a href="/.well-known/x402-bazaar.json" target="_blank" className="hover:text-purple-300">
+            <a href={staticUrl("/.well-known/x402-bazaar.json")} target="_blank" className="hover:text-purple-300">
               x402-bazaar.json
             </a>
-            <a href="/.well-known/pi.toml" target="_blank" className="hover:text-purple-300">
+            <a href={staticUrl("/.well-known/pi.toml")} target="_blank" className="hover:text-purple-300">
               pi.toml
             </a>
-            <a href="/validation-key.txt" target="_blank" className="hover:text-purple-300">
+            <a href={staticUrl("/validation-key.txt")} target="_blank" className="hover:text-purple-300">
               validation-key.txt
             </a>
           </div>
