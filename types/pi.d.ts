@@ -9,7 +9,11 @@ declare global {
         onIncompletePaymentFound: (payment: any) => void | Promise<void>,
       ) => Promise<{
         accessToken: string;
-        user: { uid: string; username: string };
+        user: {
+          uid: string;
+          username?: string;
+          wallet_address?: string;
+        };
       }>;
       createPayment: (
         payment: { amount: number; memo: string; metadata: Record<string, unknown> },

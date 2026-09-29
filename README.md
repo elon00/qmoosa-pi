@@ -105,7 +105,7 @@ Key protections now include:
 - x402 disabled until a real verifier is configured
 - explicit separation of HMAC integrity receipts from real PQC
 
-See [SECURITY.md](./SECURITY.md), [docs/AUDIT_REPORT.md](./docs/AUDIT_REPORT.md), and [docs/PRODUCTION_READINESS.md](./docs/PRODUCTION_READINESS.md).
+See [SECURITY.md](./SECURITY.md), [docs/AUDIT_REPORT.md](./docs/AUDIT_REPORT.md), [docs/PRODUCTION_READINESS.md](./docs/PRODUCTION_READINESS.md), and [docs/UX_STANDARDS.md](./docs/UX_STANDARDS.md).
 
 ## Remaining external production gates
 
