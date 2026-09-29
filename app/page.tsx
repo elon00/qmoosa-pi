@@ -12,6 +12,12 @@ export default function Page() {
   const [loading, setLoading] = useState(false);
   const [paymentLoading, setPaymentLoading] = useState(false);
   const [amount, setAmount] = useState("0.1");
+  const [conway, setConway] = useState<any>(null);
+  const [advisorMessage, setAdvisorMessage] = useState("Explain the current production readiness.");
+  const [advisorReply, setAdvisorReply] = useState<any>(null);
+  const [serviceHealth, setServiceHealth] = useState<any>(null);
+  const [projectName, setProjectName] = useState("");
+  const [projectDraft, setProjectDraft] = useState<string | null>(null);
 
   const backendUrl = (process.env.NEXT_PUBLIC_PI_BACKEND_URL || "").replace(/\/$/, "");
   const sandbox = process.env.NEXT_PUBLIC_PI_SANDBOX !== "false";
@@ -147,6 +153,61 @@ export default function Page() {
     }
   }
 
+  async function loadServiceHealth() {
+    try {
+      setError(null);
+      const res = await backendFetch("/health");
+      const body = await res.json();
+      if (!res.ok) throw new Error(body?.error || "Backend health check failed");
+      setServiceHealth(body);
+    } catch (err: any) {
+      setError(err?.message || "Backend health check failed");
+    }
+  }
+
+  async function conwayAction(action: "state" | "step" | "reset") {
+    try {
+      setError(null);
+      const path = action === "state" ? "/api/v1/conway/state" : `/api/v1/conway/${action}`;
+      const res = await backendFetch(path, action === "state" ? {} : {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: action === "step" ? JSON.stringify({ steps: 1 }) : JSON.stringify({ preset: "glider" }),
+      });
+      const body = await res.json();
+      if (!res.ok) throw new Error(body?.error || "Conway request failed");
+      setConway(body);
+    } catch (err: any) {
+      setError(err?.message || "Conway request failed");
+    }
+  }
+
+  async function askAdvisor() {
+    try {
+      setError(null);
+      const res = await backendFetch("/api/v1/ai/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: advisorMessage, agentType: "navigator" }),
+      });
+      const body = await res.json();
+      if (!res.ok) throw new Error(body?.error || "Advisor request failed");
+      setAdvisorReply(body);
+    } catch (err: any) {
+      setError(err?.message || "Advisor request failed");
+    }
+  }
+
+  function saveLocalProjectDraft() {
+    const name = projectName.trim();
+    if (!name) {
+      setError("Enter a project name.");
+      return;
+    }
+    setError(null);
+    setProjectDraft(name);
+  }
+
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
       <div className="mx-auto max-w-5xl px-6 py-12">
@@ -231,17 +292,100 @@ export default function Page() {
           </div>
         </section>
 
-        <section className="mt-6 grid gap-4 md:grid-cols-3">
-          {[
-            ["Conway Engine", "Backend engine implemented; persistent state is still a production gate."],
-            ["Agentics", "Rules-based advisor exists; real multi-model inference provider is not yet configured."],
-            ["PQC", "Integrity layer is adapter-ready; real ML-DSA/ML-KEM production signing remains pending."],
-          ].map(([title, description]) => (
-            <div key={title} className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
-              <h3 className="font-semibold">{title}</h3>
-              <p className="mt-2 text-sm text-slate-400">{description}</p>
+        <section className="mt-6 grid gap-6 lg:grid-cols-2">
+          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
+            <h2 className="text-xl font-semibold">Conway Lab</h2>
+            <p className="mt-2 text-sm text-slate-400">
+              Calls the real backend B3/S23 engine. State is currently in-memory.
+            </p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <button disabled={!backendConfigured} onClick={() => conwayAction("state")} className="rounded-lg bg-slate-700 px-3 py-2 disabled:opacity-40">Load state</button>
+              <button disabled={!backendConfigured} onClick={() => conwayAction("step")} className="rounded-lg bg-violet-600 px-3 py-2 disabled:opacity-40">Step</button>
+              <button disabled={!backendConfigured} onClick={() => conwayAction("reset")} className="rounded-lg bg-slate-700 px-3 py-2 disabled:opacity-40">Reset glider</button>
             </div>
-          ))}
+            {conway && (
+              <div className="mt-4 rounded-xl bg-slate-950 p-4 text-sm">
+                <p>Generation: {conway.generation ?? "—"}</p>
+                <p>Live cells: {conway.liveCells ?? "—"}</p>
+                <p className="mt-1 break-all text-xs text-slate-500">State hash: {conway.stateHash ?? "—"}</p>
+              </div>
+            )}
+          </div>
+
+          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
+            <h2 className="text-xl font-semibold">Agent Advisor</h2>
+            <p className="mt-2 text-sm text-slate-400">
+              Rules-based advisor endpoint. It is intentionally not labeled as production multi-model AI.
+            </p>
+            <textarea
+              value={advisorMessage}
+              onChange={(event) => setAdvisorMessage(event.target.value)}
+              className="mt-4 min-h-24 w-full rounded-xl border border-slate-700 bg-slate-950 p-3"
+              maxLength={4000}
+            />
+            <button disabled={!backendConfigured} onClick={askAdvisor} className="mt-3 rounded-lg bg-violet-600 px-4 py-2 disabled:opacity-40">
+              Ask advisor
+            </button>
+            {advisorReply && (
+              <div className="mt-4 rounded-xl bg-slate-950 p-4 text-sm">
+                <p className="font-semibold">{advisorReply.agent}</p>
+                <p className="mt-2 text-slate-300">{advisorReply.reply}</p>
+                <p className="mt-2 text-xs text-slate-500">Mode: {advisorReply.mode}</p>
+              </div>
+            )}
+          </div>
+
+          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
+            <h2 className="text-xl font-semibold">Runtime & x402 status</h2>
+            <p className="mt-2 text-sm text-slate-400">
+              x402 remains disabled unless a real external settlement verifier is configured.
+            </p>
+            <button disabled={!backendConfigured} onClick={loadServiceHealth} className="mt-4 rounded-lg bg-slate-700 px-4 py-2 disabled:opacity-40">
+              Check backend
+            </button>
+            {serviceHealth && (
+              <div className="mt-4 rounded-xl bg-slate-950 p-4 text-sm">
+                <p>Backend: {serviceHealth.ok ? "healthy" : "unhealthy"}</p>
+                <p>Pi API key: {serviceHealth.piApiConfigured ? "configured" : "not configured"}</p>
+                <p>x402: {serviceHealth.x402BazaarReady ? "verifier configured" : "disabled"}</p>
+                <p>PQC: {serviceHealth.postQuantum}</p>
+              </div>
+            )}
+          </div>
+
+          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
+            <h2 className="text-xl font-semibold">Launchpad Draft</h2>
+            <p className="mt-2 text-sm text-slate-400">
+              Create a local project draft for review. Publishing/persistence is not enabled until a production database and moderation workflow exist.
+            </p>
+            <input
+              value={projectName}
+              onChange={(event) => setProjectName(event.target.value)}
+              placeholder="Project name"
+              className="mt-4 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3"
+              maxLength={80}
+            />
+            <button onClick={saveLocalProjectDraft} className="mt-3 rounded-lg bg-emerald-700 px-4 py-2">
+              Save local draft
+            </button>
+            {projectDraft && (
+              <p className="mt-4 rounded-xl bg-slate-950 p-4 text-sm text-emerald-300">
+                Draft ready: {projectDraft}
+              </p>
+            )}
+          </div>
+        </section>
+
+        <section className="mt-6 rounded-2xl border border-slate-800 bg-slate-900 p-6">
+          <h2 className="text-xl font-semibold">Security layers</h2>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            <p className="rounded-xl bg-slate-950 p-4 text-sm text-slate-300">
+              <strong>PQC:</strong> adapter target only. Real ML-DSA/ML-KEM signing is not enabled.
+            </p>
+            <p className="rounded-xl bg-slate-950 p-4 text-sm text-slate-300">
+              <strong>Integrity receipts:</strong> HMAC only when a server secret is explicitly configured.
+            </p>
+          </div>
         </section>
 
         {error && (
