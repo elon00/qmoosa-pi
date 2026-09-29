@@ -1,0 +1,62 @@
+name: Qmoosa Pi CI
+
+on:
+  push:
+    branches: [main, qmoosa-pi-production-hardening]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec tsc --noEmit
+      - run: pnpm run build
+
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+      - run: npm ci
+      - run: npm test
+
+  repository-hygiene:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fail on tracked runtime secrets
+        shell: bash
+        run: |
+          set -e
+          if git ls-files | grep -E '(^|/)\.env$|\.pem$|\.key$|secret.*\.json$'; then
+            echo "Tracked secret-like file detected."
+            exit 1
+          fi
+      - name: Guard against fake production claims
+        shell: bash
+        run: |
+          set -e
+          if grep -RIn --exclude-dir=.git --exclude-dir=node_modules             -E 'guarantee 100% compliance|guaranteed returns|fake investor|verified ML-DSA'             app backend README.md; then
+            echo "Potentially misleading production claim detected."
+            exit 1
+          fi

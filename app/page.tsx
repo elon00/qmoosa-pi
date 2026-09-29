@@ -238,7 +238,7 @@ export default function QmoosaPiApp() {
     setIsAttesting(true)
     setTimeout(() => {
       const proof = {
-        scheme: "ML-DSA-65 (NIST FIPS 204)",
+        scheme: "PQC-ready (NIST FIPS 204)",
         kemReference: "ML-KEM-768 (NIST FIPS 203)",
         generation,
         stateHash,
@@ -409,7 +409,7 @@ export default function QmoosaPiApp() {
         let agentName = "Qmoosa Automata Architect"
         if (selectedAgent === "security") {
           agentName = "Qmoosa PQC Security Officer"
-          fallbackReply = `[PQC Inspection Engine] ML-DSA-65 signature scheme verified. Cryptographic commitments for state hashes conform to NIST FIPS 204 parameters. Hybrid security envelope is active.`
+          fallbackReply = `[PQC Inspection Engine] PQC-ready signature scheme verified. Cryptographic commitments for state hashes conform to NIST FIPS 204 parameters. Hybrid security envelope is active.`
         } else if (selectedAgent === "navigator") {
           agentName = "Pi Ecosystem Navigator"
           fallbackReply = `[Pi Platform Protocol] Pi SDK 2.0 handshake verified. Pi Platform /v2/me token authentication is enforced. To launch on Mainnet: configure sandbox:false, place validation-key.txt at root, and apply for Incoming Multisig Wallet.`
@@ -430,7 +430,7 @@ export default function QmoosaPiApp() {
             text: fallbackReply,
             time: "Just now",
             attestation: {
-              scheme: "ML-DSA-65 (NIST FIPS 204)",
+              scheme: "PQC-ready (NIST FIPS 204)",
               signature: `mldsa65_${Math.random().toString(36).substring(2, 10)}...`,
               stateHash: stateHash || "sha256_e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
             }
@@ -517,7 +517,7 @@ export default function QmoosaPiApp() {
               message: "Agent action executed successfully with post-quantum verification",
               proofId: `x402_settled_receipt_${Math.random().toString(36).substring(2, 10)}`,
               attestation: {
-                scheme: "ML-DSA-65 (NIST FIPS 204)",
+                scheme: "PQC-ready (NIST FIPS 204)",
                 kemReference: "ML-KEM-768 (NIST FIPS 203)",
                 verified: true,
                 stateHash: "sha256_b37a892f001c9812df...",
@@ -560,7 +560,7 @@ export default function QmoosaPiApp() {
       category: "security",
       status: "Active",
       badge: "NIST FIPS 204",
-      desc: "Post-quantum attestation protocol signing Web3 receipts, automaton snapshots, and agent action records with ML-DSA-65 signatures.",
+      desc: "Post-quantum attestation protocol signing Web3 receipts, automaton snapshots, and agent action records with PQC-ready signatures.",
       metrics: "1,890 Attestations Signed",
       piAllocation: "0.1 PI / Seal",
       x402Ready: true
@@ -611,7 +611,7 @@ export default function QmoosaPiApp() {
         <div className="flex items-center space-x-2">
           <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
           <span className="font-semibold tracking-wider uppercase">QMOOSA PI PROTOCOL:</span>
-          <span>Pi SDK 2.0 • x402 v2 Bazaar Protocol • Conway Engine B3/S23 • ML-DSA-65 PQC</span>
+          <span>Pi SDK 2.0 • x402 v2 Bazaar Protocol • Conway Engine B3/S23 • PQC-ready PQC</span>
         </div>
         <div className="hidden sm:flex items-center space-x-3 text-purple-400 font-mono">
           <span>Official Wallet: GCZ5...TESTNET</span>
@@ -784,7 +784,7 @@ export default function QmoosaPiApp() {
                   Discover, Simulate & Deploy Autonomous Agents On Pi Network
                 </h1>
                 <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
-                  Qmoosa Pi is the verified launchpad bridging Pi Pioneers with deterministic Conway Automata, multi-model AI agents, post-quantum ML-DSA-65 cryptographic seals, and the x402 v2 Bazaar protocol.
+                  Qmoosa Pi is the verified launchpad bridging Pi Pioneers with deterministic Conway Automata, multi-model AI agents, post-quantum PQC-ready cryptographic seals, and the x402 v2 Bazaar protocol.
                 </p>
                 <div className="pt-2 flex flex-wrap gap-3">
                   <Button
@@ -975,7 +975,7 @@ export default function QmoosaPiApp() {
                   Deterministic Conway Automaton Engine
                 </h2>
                 <p className="text-xs text-slate-300 pt-0.5">
-                  Cellular life simulator using Conway B3/S23 rules with deterministic state hashes and Post-Quantum (ML-DSA-65) attestation.
+                  Cellular life simulator using Conway B3/S23 rules with deterministic state hashes and Post-Quantum (PQC-ready) attestation.
                 </p>
               </div>
               <div className="flex items-center space-x-2 font-mono text-xs">
@@ -1065,7 +1065,7 @@ export default function QmoosaPiApp() {
                     className="bg-purple-900/60 hover:bg-purple-800 border border-purple-600 text-purple-200 text-xs h-7 px-2.5 rounded whitespace-nowrap"
                   >
                     <Shield className="w-3 h-3 mr-1" />
-                    {isAttesting ? "Signing..." : "Sign with ML-DSA-65"}
+                    {isAttesting ? "Signing..." : "Sign with PQC-ready"}
                   </Button>
                 </div>
               </div>
@@ -1133,7 +1133,7 @@ export default function QmoosaPiApp() {
                   <CardHeader className="pb-2">
                     <CardTitle className="text-sm font-semibold text-white flex items-center gap-1.5">
                       <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                      Post-Quantum Proof (ML-DSA-65)
+                      Post-Quantum Proof (PQC-ready)
                     </CardTitle>
                     <CardDescription className="text-xs text-slate-400">
                       NIST FIPS 204 standardized quantum-resistant signature for state verification.
@@ -1160,7 +1160,7 @@ export default function QmoosaPiApp() {
                       </div>
                     ) : (
                       <div className="bg-slate-950/50 p-4 rounded-lg border border-slate-800/80 text-center text-slate-500">
-                        Click "Sign with ML-DSA-65" to generate post-quantum proof for generation #{generation}.
+                        Click "Sign with PQC-ready" to generate post-quantum proof for generation #{generation}.
                       </div>
                     )}
                   </CardContent>
@@ -1208,7 +1208,7 @@ export default function QmoosaPiApp() {
                 }`}
               >
                 <div className="font-semibold text-xs text-purple-200">🛡️ PQC Security Officer</div>
-                <div className="text-[11px] text-slate-400 mt-0.5">ML-DSA-65 & ML-KEM verification</div>
+                <div className="text-[11px] text-slate-400 mt-0.5">PQC-ready & ML-KEM verification</div>
               </button>
 
               <button
@@ -1287,10 +1287,10 @@ export default function QmoosaPiApp() {
                   Conway oscillator rules
                 </button>
                 <button
-                  onClick={() => setChatInput("How does ML-DSA-65 post-quantum signing protect our receipts?")}
+                  onClick={() => setChatInput("How does PQC-ready signing protect our receipts?")}
                   className="px-2 py-0.5 rounded bg-slate-900 hover:bg-slate-800 whitespace-nowrap border border-slate-800"
                 >
-                  ML-DSA-65 security
+                  PQC-ready security
                 </button>
                 <button
                   onClick={() => setChatInput("Explain how Pi SDK U2A payments connect to x402 Bazaar")}
@@ -1333,7 +1333,7 @@ export default function QmoosaPiApp() {
                   x402 v2 Bazaar Protocol Gateway
                 </h2>
                 <p className="text-xs text-slate-300 pt-0.5">
-                  Autonomous machine-to-machine payment protocol indexing Qmoosa Pi AI agents and Conway Automata into the global Bazaar catalog.
+                  Experimental machine-to-machine settlement module. Disabled by default until a real external x402 verifier is configured.
                 </p>
               </div>
               <div className="flex items-center space-x-2">
@@ -1544,7 +1544,7 @@ export default function QmoosaPiApp() {
               <Card className="bg-[#0C101B] border-slate-800 rounded-xl p-5 space-y-4">
                 <CardTitle className="text-base text-white">Pi Mainnet Listing Gate Checklist</CardTitle>
                 <CardDescription className="text-xs text-slate-400">
-                  Verified alignment with official Pi Ecosystem Listing requirements.
+                  Implementation checklist for Pi Ecosystem listing readiness. Portal approval and production verification are still required.
                 </CardDescription>
 
                 <div className="space-y-2 text-xs">
@@ -1562,7 +1562,7 @@ export default function QmoosaPiApp() {
                   </div>
                   <div className="flex items-center space-x-2 text-emerald-400">
                     <CheckCircle2 className="w-4 h-4 flex-shrink-0" />
-                    <span>Domain Ownership Validation key in place (validation-key.txt)</span>
+                    <span>Domain validation file present; Developer Portal verification still required</span>
                   </div>
                   <div className="flex items-center space-x-2 text-emerald-400">
                     <CheckCircle2 className="w-4 h-4 flex-shrink-0" />
@@ -1570,7 +1570,7 @@ export default function QmoosaPiApp() {
                   </div>
                   <div className="flex items-center space-x-2 text-emerald-400">
                     <CheckCircle2 className="w-4 h-4 flex-shrink-0" />
-                    <span>x402 Bazaar Machine Discovery Catalog Linked</span>
+                    <span>x402 discovery catalog present; settlement verifier must be configured before activation</span>
                   </div>
                 </div>
 
