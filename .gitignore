@@ -10,4 +10,5 @@ backend/node_modules/
 contracts/target/
 *.wasm
 .next/
+out/
 pnpm-workspace.yaml
