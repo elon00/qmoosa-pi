@@ -29,6 +29,7 @@ function main() {
 
   run("node scripts/qmoosa-doctor.js");
   run("pnpm exec tsc --noEmit");
+  run("npm ci", path.join(ROOT_DIR, "backend"));
   run("npm test", path.join(ROOT_DIR, "backend"));
   run("npm run syntax", path.join(ROOT_DIR, "backend"));
 
