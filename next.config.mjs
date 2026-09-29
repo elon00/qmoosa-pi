@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const isGitHubPages = process.env.GITHUB_PAGES === 'true'
-const repoName = process.env.GITHUB_REPOSITORY?.split('/')[1] || 'pi-network-launchpad'
+const repoName = process.env.GITHUB_REPOSITORY?.split('/')[1] || 'qmoosa-pi'
 const basePath = isGitHubPages ? `/${repoName}` : ''
 
 const nextConfig = {

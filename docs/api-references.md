@@ -1,8 +1,8 @@
 # API Reference
 
-## Pi-Network-Launchpad Backend API
+## Qmoosa Pi Backend API
 
-Base URL: `https://api.pi-network-launchpad.com`
+Base URL: `https://api.qmoosa-pi.com`
 
 ## Authentication
 

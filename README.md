@@ -1,7 +1,7 @@
 # QMOOSA PI: AI AGENTIC LAUNCHPAD & CONWAY AUTOMATON PLATFORM
 ### Production-hardening candidate for a Pi-native AI Agentic & Conway Automaton platform
 
-[![Production DApp](https://img.shields.io/badge/Live%20DApp-GitHub%20Pages%20Production-success.svg)](https://elon00.github.io/pi-network-launchpad/)
+[![Production DApp](https://img.shields.io/badge/Live%20DApp-GitHub%20Pages%20Production-success.svg)](https://elon00.github.io/qmoosa-pi/)
 [![Pi Network](https://img.shields.io/badge/Pi%20Network-SDK%202.0%20Verified-6B46C1.svg)](https://developers.minepi.com)
 [![x402 Bazaar](https://img.shields.io/badge/x402%20Bazaar-Protocol%20v2%20Indexed-10B981.svg)](https://x402.org)
 [![NIST Standard](https://img.shields.io/badge/Post--Quantum-NIST%20FIPS%20204%20(ML--DSA--65)-blue.svg)](https://csrc.nist.gov)
@@ -14,13 +14,13 @@
 
 | Environment / Service | Verified Live URL | Status | Description |
 | :--- | :--- | :---: | :--- |
-| **Primary Production DApp** | [https://elon00.github.io/pi-network-launchpad/](https://elon00.github.io/pi-network-launchpad/) | 🟢 Live | Institutional 5-tab responsive Next.js application |
+| **Primary Production DApp** | [https://elon00.github.io/qmoosa-pi/](https://elon00.github.io/qmoosa-pi/) | 🟢 Live | Institutional 5-tab responsive Next.js application |
 | **Pi Browser Deep-Link** | `pi://qmoosa.pinet.com` | 🟡 Portal-dependent | Native mobile experience inside official Pi Browser |
 | **PiNet Universal URL** | `https://qmoosa.pinet.com` | 🟡 Listing-dependent | Universal Web2/Web3 sharing gateway |
-| **x402 Bazaar Catalog** | [/.well-known/x402-bazaar.json](https://elon00.github.io/pi-network-launchpad/.well-known/x402-bazaar.json) | 🟢 200 OK | Machine-readable RFC discovery catalog |
-| **x402 Root Alias** | [/x402-bazaar.json](https://elon00.github.io/pi-network-launchpad/x402-bazaar.json) | 🟢 200 OK | Direct root alias bypassing dot-directory filters |
-| **Pi Ecosystem Manifest** | [/.well-known/pi.toml](https://elon00.github.io/pi-network-launchpad/.well-known/pi.toml) | 🟢 200 OK | Official Pi Network ecosystem and token discovery file |
-| **Domain Validation File** | [/validation-key.txt](https://elon00.github.io/pi-network-launchpad/validation-key.txt) | 🟡 Present | Developer Portal ownership verification still required |
+| **x402 Bazaar Catalog** | [/.well-known/x402-bazaar.json](https://elon00.github.io/qmoosa-pi/.well-known/x402-bazaar.json) | 🟢 200 OK | Machine-readable RFC discovery catalog |
+| **x402 Root Alias** | [/x402-bazaar.json](https://elon00.github.io/qmoosa-pi/x402-bazaar.json) | 🟢 200 OK | Direct root alias bypassing dot-directory filters |
+| **Pi Ecosystem Manifest** | [/.well-known/pi.toml](https://elon00.github.io/qmoosa-pi/.well-known/pi.toml) | 🟢 200 OK | Official Pi Network ecosystem and token discovery file |
+| **Domain Validation File** | [/validation-key.txt](https://elon00.github.io/qmoosa-pi/validation-key.txt) | 🟡 Present | Developer Portal ownership verification still required |
 | **Technical White Paper** | [QMOOSA_PI_WHITEPAPER.md](./whitepaper/QMOOSA_PI_WHITEPAPER.md) | 🟢 Canonical | Canonical protocol & economic white paper |
 | **Global Marketing Strategy** | [GLOBAL_MARKETING_STRATEGY.md](./docs/GLOBAL_MARKETING_STRATEGY.md) | 🟢 Active | Institutional GTM, viral loops & Pioneer funnels |
 
@@ -160,8 +160,8 @@ Quantum supremacy threatens legacy cryptography (RSA, ECDSA, Ed25519) via Shor's
 
 ### 1. Clone & Install
 ```bash
-git clone https://github.com/elon00/pi-network-launchpad.git
-cd pi-network-launchpad
+git clone https://github.com/elon00/qmoosa-pi.git
+cd qmoosa-pi
 
 # Install dependencies
 pnpm install

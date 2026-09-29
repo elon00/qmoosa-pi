@@ -93,8 +93,8 @@ We may modify these terms at any time. Continued use constitutes acceptance of n
 ### 14. Contact Information
 
 For questions about these terms:
-- Email: legal@pi-network-launchpad.com
-- Support: https://github.com/elon00/pi-network-launchpad/issues
+- Email: legal@qmoosa-pi.com
+- Support: https://github.com/elon00/qmoosa-pi/issues
 
 ### 15. Severability
 

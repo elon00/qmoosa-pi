@@ -1,34 +1,32 @@
 # Developer Guide
 
-## Pi-Network-Launchpad
+## Qmoosa Pi
 
-This guide provides detailed instructions for developers working on the Pi-Network-Launchpad project.
+This guide provides detailed instructions for developers working on the Qmoosa Pi platform.
 
 ## Architecture Overview
 
 The project follows a modular architecture with clear separation of concerns:
 
-- **Frontend**: React-based user interface
-- **Backend**: Node.js API server
-- **Smart Contracts**: Rust-based contracts on Pi Network
-- **AI Layer**: Python-based machine learning models
-- **Database**: PostgreSQL with IPFS integration
+- **Frontend**: Next.js 14 App Router user interface with Conway Automaton and Pi SDK 2.0
+- **Backend**: Express API server with x402 Bazaar Protocol endpoints
+- **Smart Contracts**: Soroban/Rust contracts aligned with Pi Network testnet/mainnet
+- **Database**: IPFS and JSON-RPC integrations
 
 ## Development Setup
 
 ### Prerequisites
 
-- Node.js 16 or higher
-- Rust 1.60 or higher
-- Python 3.8 or higher
-- PostgreSQL 12 or higher
+- Node.js 18 or higher (Node 20+ recommended)
+- Rust 1.70 or higher (for contract development)
+- pnpm 9 or npm
 
 ### Environment Setup
 
 1. **Clone the repository**
     ```bash
-    git clone https://github.com/pi-network/pi-network-launchpad.git
-    cd pi-network-launchpad
+    git clone https://github.com/elon00/qmoosa-pi.git
+    cd qmoosa-pi
     ```
 
 2. **Frontend Setup**
@@ -226,4 +224,4 @@ soroban contract deploy \
 For questions or issues:
 - GitHub Issues
 - Developer Discord
-- Email: support@pi-network-launchpad.com
+- Email: support@qmoosa-pi.com

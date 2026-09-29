@@ -76,8 +76,8 @@ We may update this privacy policy from time to time. We will notify users of any
 ### 11. Contact Us
 
 For privacy-related questions, contact us at:
-- Email: privacy@pi-network-launchpad.com
-- Support: https://github.com/elon00/pi-network-launchpad/issues
+- Email: privacy@qmoosa-pi.com
+- Support: https://github.com/elon00/qmoosa-pi/issues
 
 ### 12. Governing Law
 
