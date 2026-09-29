@@ -568,7 +568,7 @@ app.post("/api/verify", async (req, res) => {
   try {
     const user = await verifyAccessToken(req, res);
     if (!user) return;
-    res.json({ uid: user.uid, username: user.username });
+    res.json({ uid: user.uid, username: user.username, wallet_address: user.wallet_address });
   } catch (error) {
     console.error("Pi auth verification failed:", error);
     res.status(502).json({ error: "Could not verify Pioneer with Pi Platform API" });
