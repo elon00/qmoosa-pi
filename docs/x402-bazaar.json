@@ -1,0 +1,93 @@
+{
+  "x402Version": 2,
+  "service": "Qmoosa Pi Platform",
+  "facilitator": "https://x402.org/facilitator",
+  "ready": true,
+  "catalogRegistration": "A Bazaar-capable facilitator indexes a resource after a conformant paid settlement echoes the bazaar extension.",
+  "provider": {
+    "name": "Qmoosa Pi",
+    "website": "https://qmoosa-pi.netlify.app/",
+    "appUrl": "pi://qmoosa-pi.pinet.com",
+    "paymentScheme": "pi-u2a-and-x402-hybrid",
+    "network": "pi-testnet",
+    "piWallet": "GCZ5K7Q3WMOOSAPIOFFICIALWALLETHACKATHON2026TESTNET",
+    "currency": "PI / USDC",
+    "supplyPolicy": "PI_NATIVE_UTILITY",
+    "conwayEngineVersion": "2.4.0-pqc",
+    "pqcProfile": "ML-DSA-65/ML-KEM-768"
+  },
+  "items": [
+    {
+      "resource": "https://qmoosa-pi.netlify.app/api/v1/x402/agent/action",
+      "type": "http",
+      "x402Version": 2,
+      "accepts": [
+        {
+          "scheme": "exact",
+          "network": "solana:4uhcVJyU9pJkvQyS88uRDiswHXSCkY3z",
+          "amount": "100000",
+          "maxAmountRequired": "100000",
+          "asset": "4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU",
+          "payTo": "BPshPrMazV7qunhcq18AvCHjSceHbKytiRDNrtCv68g3",
+          "extra": {
+            "assetScale": 6,
+            "symbol": "USDC",
+            "nativePiEquivalent": "0.1 PI"
+          }
+        }
+      ],
+      "metadata": {
+        "service": "Qmoosa AI Agent Execution",
+        "description": "Trigger an autonomous agent workflow with post-quantum signed execution proof."
+      }
+    },
+    {
+      "resource": "https://qmoosa-pi.netlify.app/api/v1/x402/conway/step",
+      "type": "http",
+      "x402Version": 2,
+      "accepts": [
+        {
+          "scheme": "exact",
+          "network": "solana:4uhcVJyU9pJkvQyS88uRDiswHXSCkY3z",
+          "amount": "50000",
+          "maxAmountRequired": "50000",
+          "asset": "4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU",
+          "payTo": "BPshPrMazV7qunhcq18AvCHjSceHbKytiRDNrtCv68g3",
+          "extra": {
+            "assetScale": 6,
+            "symbol": "USDC",
+            "nativePiEquivalent": "0.05 PI"
+          }
+        }
+      ],
+      "metadata": {
+        "service": "Qmoosa Conway Automaton Evolution Step",
+        "description": "Simulate and verify N generations of Conway Automaton with deterministic state hash & PQC attestation."
+      }
+    },
+    {
+      "resource": "https://qmoosa-pi.netlify.app/api/v1/x402/launchpad/deploy",
+      "type": "http",
+      "x402Version": 2,
+      "accepts": [
+        {
+          "scheme": "exact",
+          "network": "solana:4uhcVJyU9pJkvQyS88uRDiswHXSCkY3z",
+          "amount": "500000",
+          "maxAmountRequired": "500000",
+          "asset": "4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU",
+          "payTo": "BPshPrMazV7qunhcq18AvCHjSceHbKytiRDNrtCv68g3",
+          "extra": {
+            "assetScale": 6,
+            "symbol": "USDC",
+            "nativePiEquivalent": "0.5 PI"
+          }
+        }
+      ],
+      "metadata": {
+        "service": "Qmoosa Agentic Launchpad Project Registration",
+        "description": "Publish a new AI agent or Conway Automaton model into the Qmoosa discovery catalog."
+      }
+    }
+  ]
+}

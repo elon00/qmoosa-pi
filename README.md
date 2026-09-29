@@ -211,7 +211,7 @@ curl -i -X POST http://localhost:5000/api/v1/x402/agent/action \
 Qmoosa Pi is being hardened toward the **Pi Network Mainnet Listing Guidelines**. Final listing/compliance cannot be guaranteed by code alone and requires Pi Developer Portal steps and Pi review:
 - ✅ **Pi-Only Authentication**: Strictly enforces `window.Pi.authenticate(['username', 'payments'])`.
 - ✅ **Pi-Only Payments in Pi Browser**: All user-facing payments settle in native Pi coins; non-Pi tokens are disabled in the primary flow.
-- ✅ **Zero Fraudulent Promises**: No deceptive ROI guarantees, fake investor testimonials, or unverified claims.
+- ✅ **Zero Fraudulent Promises**: No deceptive ROI promises, fabricated testimonials, or unverified claims.
 - 🟡 **Domain verification**: validation file is present; Developer Portal verification is still required.
 - 🟡 **External integrations**: experimental x402/non-Pi paths must remain disabled or isolated from the Pi Browser Mainnet user flow.
 

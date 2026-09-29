@@ -1,0 +1,20 @@
+# Pi Network Ecosystem & Testnet Token Manifest
+[DOCUMENTATION]
+ORG_NAME = "Qmoosa Pi Foundation"
+ORG_URL = "https://qmoosa-pi.netlify.app"
+ORG_DESCRIPTION = "Pi-Native AI Agentic & Conway Automaton Launchpad Platform"
+ORG_OFFICIAL_EMAIL = "contact@qmoosa.ai"
+
+[[CURRENCIES]]
+code = "QMOOSA"
+issuer = "GCZ5K7Q3WMOOSAPIOFFICIALWALLETHACKATHON2026TESTNET"
+display_decimals = 7
+name = "Qmoosa Pi Utility Token"
+desc = "Utility and governance token for Conway Automata simulations, AI agent orchestration, and PQC cryptographic attestations on Qmoosa Pi"
+conditions = "Experimental Pi Testnet utility token. Mainnet uses native Pi payments only."
+image = "https://qmoosa-pi.netlify.app/logo.png"
+
+[PROTOCOLS]
+X402_BAZAAR = "https://qmoosa-pi.netlify.app/.well-known/x402-bazaar.json"
+PQC_INTEGRATION = "ML-DSA-65/ML-KEM-768"
+CONWAY_AUTOMATON = "v2.4-B3S23"
