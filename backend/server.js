@@ -14,9 +14,45 @@ const ENABLE_X402 = process.env.ENABLE_X402 === "true";
 const X402_FACILITATOR = process.env.X402_FACILITATOR || null;
 const X402_VERIFY_URL = process.env.X402_VERIFY_URL || null;
 const X402_VERIFY_TOKEN = process.env.X402_VERIFY_TOKEN || null;
+const INTEGRITY_HMAC_KEY = process.env.INTEGRITY_HMAC_KEY || "";
+const ALLOWED_ORIGINS = (process.env.APP_ORIGIN || "http://localhost:3000")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
 
-app.use(cors({ origin: process.env.APP_ORIGIN ? process.env.APP_ORIGIN.split(",") : true }));
-app.use(express.json());
+app.disable("x-powered-by");
+app.use((req, res, next) => {
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("Referrer-Policy", "no-referrer");
+  res.setHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+  next();
+});
+app.use(cors({
+  origin(origin, callback) {
+    if (!origin || ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
+    return callback(null, false);
+  },
+}));
+app.use(express.json({ limit: "64kb" }));
+
+const rateWindow = new Map();
+function rateLimit({ windowMs = 60_000, max = 120 } = {}) {
+  return (req, res, next) => {
+    const key = req.ip || req.socket?.remoteAddress || "unknown";
+    const now = Date.now();
+    const current = rateWindow.get(key);
+    if (!current || now - current.startedAt >= windowMs) {
+      rateWindow.set(key, { startedAt: now, count: 1 });
+      return next();
+    }
+    current.count += 1;
+    if (current.count > max) {
+      return res.status(429).json({ error: "Too many requests" });
+    }
+    next();
+  };
+}
+app.use("/api", rateLimit());
 
 // In-memory Conway Automaton State
 let automatonGrid = createEmptyGrid(25, 25);
@@ -92,8 +128,24 @@ function hashGrid(grid, gen) {
 function generateIntegrityReceipt(hash, subject) {
   const nonce = crypto.randomBytes(16).toString("hex");
   const timestamp = new Date().toISOString();
+
+  if (INTEGRITY_HMAC_KEY.length < 32) {
+    return {
+      scheme: "HMAC-SHA-512 integrity receipt (NOT post-quantum)",
+      pqcStatus: "adapter-ready; real ML-DSA signing is not enabled",
+      subject,
+      stateHash: hash,
+      signature: null,
+      nonce,
+      timestamp,
+      verified: false,
+      available: false,
+      reason: "INTEGRITY_HMAC_KEY is not configured with at least 32 characters"
+    };
+  }
+
   const signature = crypto
-    .createHmac("sha512", process.env.INTEGRITY_HMAC_KEY || "development-only-change-me")
+    .createHmac("sha512", INTEGRITY_HMAC_KEY)
     .update(`${hash}:${subject}:${nonce}:${timestamp}`)
     .digest("hex");
 
@@ -105,7 +157,8 @@ function generateIntegrityReceipt(hash, subject) {
     signature,
     nonce,
     timestamp,
-    verified: true
+    verified: true,
+    available: true
   };
 }
 
@@ -157,6 +210,28 @@ async function verifyAccessToken(req, res) {
   return piRes.json();
 }
 
+async function fetchPiPayment(paymentId) {
+  const response = await fetch(`${PI_API_BASE}/payments/${encodeURIComponent(paymentId)}`, {
+    headers: { Authorization: `Key ${PI_API_KEY}` },
+  });
+  const payment = await response.json().catch(() => ({}));
+  return { response, payment };
+}
+
+function validateUserToAppPayment(payment, user, txid = null) {
+  if (!payment || payment.identifier == null) return "Payment data is incomplete";
+  if (payment.user_uid !== user.uid) return "Payment does not belong to the authenticated Pioneer";
+  if (payment.direction !== "user_to_app") return "Only user-to-app payments are accepted";
+  if (!Number.isFinite(Number(payment.amount)) || Number(payment.amount) <= 0 || Number(payment.amount) > 1000) {
+    return "Payment amount is outside the accepted range";
+  }
+  if (payment.status?.cancelled || payment.status?.user_cancelled) return "Payment is cancelled";
+  if (txid && payment.transaction?.txid && payment.transaction.txid !== txid) {
+    return "Transaction ID does not match the Pi payment";
+  }
+  return null;
+}
+
 // -------------------------------------------------------------
 // Root & Health
 // -------------------------------------------------------------
@@ -169,8 +244,11 @@ app.get("/health", (_req, res) => {
     ok: true,
     service: "qmoosa-pi",
     piApiConfigured: Boolean(PI_API_KEY),
+    integrityKeyConfigured: INTEGRITY_HMAC_KEY.length >= 32,
+    allowedOriginsConfigured: ALLOWED_ORIGINS.length > 0,
     x402BazaarReady: ENABLE_X402 && Boolean(X402_VERIFY_URL),
-    conwayEngine: "active",
+    conwayEngine: "active-in-memory",
+    aiMode: "scripted-advisor",
     postQuantum: "adapter-ready; real ML-DSA signing not enabled"
   });
 });
@@ -433,40 +511,43 @@ app.post("/api/v1/conway/reset", (req, res) => {
 // -------------------------------------------------------------
 app.post("/api/v1/ai/chat", (req, res) => {
   const { message, agentType = "architect" } = req.body || {};
-  if (!message) return res.status(400).json({ error: "Message is required" });
-
-  let agentName = "Qmoosa Automata Architect";
-  let responseText = "";
-
-  switch (agentType) {
-    case "security":
-      agentName = "Qmoosa PQC Security Officer";
-      responseText = `[PQC Inspection Engine] Query analyzed. Application security layer validates ML-DSA-65 signature scheme and ML-KEM-768 key encapsulation against NIST FIPS 203/204 benchmarks. All automaton snapshots and agent action receipts receive hybrid Post-Quantum cryptographic sealing.`;
-      break;
-    case "navigator":
-      agentName = "Pi Ecosystem Navigator";
-      responseText = `[Pi Platform Bridge] Pioneer authentication confirmed via Pi SDK 2.0 (window.Pi). Server verification enforces Pi Platform API /v2/me validation. Production mode requires sandbox:false, valid validation-key.txt domain verification, and an approved Incoming Multisig Wallet for U2A flows.`;
-      break;
-    case "curator":
-      agentName = "Qmoosa Launchpad Curator";
-      responseText = `[Launchpad Project Vetting] Project listing parameters reviewed. Criteria require: (1) Pi-native authentication, (2) verified on-chain or deterministic simulation utility, (3) no misleading ROI claims, and (4) compliance with Pi Ecosystem Guidelines and x402 machine discovery standards.`;
-      break;
-    case "architect":
-    default:
-      agentName = "Qmoosa Automata Architect";
-      responseText = `[Conway Automaton Engine] Cellular matrix processed. Conway B3/S23 deterministic evolution engine is online. Glider and oscillator presets maintain canonical state serialization with SHA-256 state commitments. Ready to simulate evolutionary patterns.`;
-      break;
+  if (typeof message !== "string" || !message.trim()) {
+    return res.status(400).json({ error: "Message is required" });
+  }
+  if (message.length > 4000) {
+    return res.status(413).json({ error: "Message is too long" });
   }
 
+  const advisors = {
+    security: {
+      name: "Qmoosa Security Advisor",
+      reply: "This endpoint is a rules-based advisor, not a live multi-model AI or PQC verifier. Production ML-DSA/ML-KEM verification remains a separate implementation gate."
+    },
+    navigator: {
+      name: "Pi Ecosystem Navigator",
+      reply: "Pi authentication must be verified server-side through /v2/me. Production payments require the registered Pi app, Server API Key, verified domain and successful approve/complete handshake."
+    },
+    curator: {
+      name: "Qmoosa Launchpad Curator",
+      reply: "Launchpad review is currently rules-based. Projects should use Pi-native authentication, factual utility claims, server-verified payments and clear separation of experimental x402/PQC modules."
+    },
+    architect: {
+      name: "Qmoosa Automata Architect",
+      reply: "The Conway service implements deterministic B3/S23 evolution with SHA-256 state commitments. State is currently in-memory and should be persisted before production use."
+    }
+  };
+
+  const selected = advisors[agentType] || advisors.architect;
   const hash = crypto.createHash("sha256").update(`${message}:${Date.now()}`).digest("hex");
-  const attestation = generateIntegrityReceipt(hash, `ai-agent-${agentType}`);
 
   res.json({
-    agent: agentName,
+    agent: selected.name,
     agentType,
-    reply: responseText,
+    mode: "scripted-advisor",
+    productionAI: false,
+    reply: selected.reply,
     timestamp: new Date().toISOString(),
-    attestation
+    attestation: generateIntegrityReceipt(hash, `advisor-${agentType}`)
   });
 });
 
@@ -493,7 +574,17 @@ app.post("/api/payments/approve", async (req, res) => {
     const { paymentId } = req.body || {};
     if (!paymentId) return res.status(400).json({ error: "paymentId is required" });
 
-    const approval = await fetch(`${PI_API_BASE}/payments/${paymentId}/approve`, {
+    const { response: paymentResponse, payment } = await fetchPiPayment(paymentId);
+    if (!paymentResponse.ok) {
+      return res.status(paymentResponse.status).json({ error: "Payment could not be verified" });
+    }
+    const paymentError = validateUserToAppPayment(payment, user);
+    if (paymentError) return res.status(400).json({ error: paymentError });
+    if (payment.status?.developer_completed) {
+      return res.status(409).json({ error: "Payment is already completed" });
+    }
+
+    const approval = await fetch(`${PI_API_BASE}/payments/${encodeURIComponent(paymentId)}/approve`, {
       method: "POST",
       headers: { Authorization: `Key ${PI_API_KEY}` },
     });
@@ -517,7 +608,14 @@ app.post("/api/payments/complete", async (req, res) => {
       return res.status(400).json({ error: "paymentId and txid are required" });
     }
 
-    const completion = await fetch(`${PI_API_BASE}/payments/${paymentId}/complete`, {
+    const { response: paymentResponse, payment } = await fetchPiPayment(paymentId);
+    if (!paymentResponse.ok) {
+      return res.status(paymentResponse.status).json({ error: "Payment could not be verified" });
+    }
+    const paymentError = validateUserToAppPayment(payment, user, txid);
+    if (paymentError) return res.status(400).json({ error: paymentError });
+
+    const completion = await fetch(`${PI_API_BASE}/payments/${encodeURIComponent(paymentId)}/complete`, {
       method: "POST",
       headers: {
         Authorization: `Key ${PI_API_KEY}`,
@@ -543,7 +641,7 @@ app.post("/api/payments/incomplete", async (req, res) => {
       return res.status(400).json({ error: "paymentId and txid are required" });
     }
 
-    const paymentRes = await fetch(`${PI_API_BASE}/payments/${paymentId}`, {
+    const paymentRes = await fetch(`${PI_API_BASE}/payments/${encodeURIComponent(paymentId)}`, {
       headers: { Authorization: `Key ${PI_API_KEY}` },
     });
     if (!paymentRes.ok) {
@@ -554,8 +652,17 @@ app.post("/api/payments/incomplete", async (req, res) => {
     if (payment.identifier && payment.identifier !== paymentId) {
       return res.status(400).json({ error: "Payment identifier mismatch" });
     }
+    if (payment.direction !== "user_to_app") {
+      return res.status(400).json({ error: "Only user-to-app payments can be recovered here" });
+    }
+    if (payment.transaction?.txid && payment.transaction.txid !== txid) {
+      return res.status(400).json({ error: "Transaction ID does not match the Pi payment" });
+    }
+    if (payment.status?.cancelled || payment.status?.user_cancelled) {
+      return res.status(400).json({ error: "Cancelled payment cannot be completed" });
+    }
 
-    const completion = await fetch(`${PI_API_BASE}/payments/${paymentId}/complete`, {
+    const completion = await fetch(`${PI_API_BASE}/payments/${encodeURIComponent(paymentId)}/complete`, {
       method: "POST",
       headers: {
         Authorization: `Key ${PI_API_KEY}`,
@@ -572,7 +679,11 @@ app.post("/api/payments/incomplete", async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Qmoosa Pi Platform Backend running on port ${PORT}`);
-  console.log(`x402 Bazaar Catalog available at: /.well-known/x402-bazaar.json`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Qmoosa Pi Platform Backend running on port ${PORT}`);
+    console.log("x402 Bazaar Catalog available at: /.well-known/x402-bazaar.json");
+  });
+}
+
+module.exports = { app, stepGrid, hashGrid, createEmptyGrid };
