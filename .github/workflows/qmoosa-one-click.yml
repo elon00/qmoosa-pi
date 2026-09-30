@@ -46,7 +46,8 @@ jobs:
       - name: Production build
         env:
           GITHUB_PAGES: "true"
-          NEXT_PUBLIC_PI_SANDBOX: "true"
+          NEXT_PUBLIC_PI_SANDBOX: "false"
+          NEXT_PUBLIC_PI_NETWORK: "testnet"
           NEXT_PUBLIC_PI_BACKEND_URL: "https://qmoosa-pi-backend.onrender.com"
         run: pnpm run build
 
@@ -106,7 +107,7 @@ jobs:
             echo "- GitHub Pages repository setting must allow Actions publishing"
             echo "- Pi Developer Portal registration/domain verification"
             echo "- Real PI_API_KEY stored in hosting secrets"
-            echo "- Pi Browser Testnet/Mainnet payment confirmation"
+            echo "- Pi Browser Testnet payment confirmation"
             echo "- Mainnet wallet/multisig/listing approvals"
           } >> "$GITHUB_STEP_SUMMARY"
 
