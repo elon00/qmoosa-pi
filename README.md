@@ -32,7 +32,7 @@ GitHub Pages hosts the static frontend. The separate Express backend is deployed
 
 `https://qmoosa-pi-backend.onrender.com`
 
-The Pages build is wired to that backend in **Pi Sandbox/Testnet mode**. Conway, health, and rules-based advisor endpoints can run there. Pi authentication/payment still require the real Server API Key and Developer Portal app configuration.
+The Pages build is wired to that backend as a **hosted Pi Testnet release** with `Pi.init({ version: "2.0", sandbox: false })` and `NEXT_PUBLIC_PI_NETWORK=testnet`. Conway, health, and rules-based advisor endpoints can run there. Pi authentication/payment still require the real Server API Key and Developer Portal app configuration.
 
 ## Architecture
 
@@ -114,7 +114,7 @@ The repository cannot truthfully mark these complete without the relevant extern
 1. Register/configure the correct Pi app in Developer Portal.
 2. Store the real `PI_API_KEY` only in backend secrets.
 3. Replace `validation-key.txt` with the exact Developer Portal validation key and verify the production domain.
-4. Run a real Pi Browser Sandbox/Testnet authentication and U2A payment.
+4. Register or select a **Pi Testnet** app in Developer Portal, map this hosted URL, then run a real Test Pi authentication and U2A payment in Pi Browser.
 5. Add persistent payment/order storage and idempotent fulfillment.
 6. Complete monitoring, backup/restore, mobile QA and Mainnet/listing approvals.
 7. Add a real multi-model provider before describing the advisor as production AI.

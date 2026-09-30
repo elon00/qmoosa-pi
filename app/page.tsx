@@ -54,12 +54,13 @@ export default function Page() {
   const [projectDraft, setProjectDraft] = useState<string | null>(null);
 
   const backendUrl = (process.env.NEXT_PUBLIC_PI_BACKEND_URL || "").replace(/\/$/, "");
-  const sandbox = process.env.NEXT_PUBLIC_PI_SANDBOX !== "false";
+  const sandbox = process.env.NEXT_PUBLIC_PI_SANDBOX === "true";
+  const piNetwork = (process.env.NEXT_PUBLIC_PI_NETWORK || "testnet").toLowerCase();
   const backendConfigured = Boolean(backendUrl);
 
   const modeLabel = useMemo(
-    () => (sandbox ? "Sandbox / Testnet" : "Production"),
-    [sandbox],
+    () => (sandbox ? "Pi Sandbox" : piNetwork === "testnet" ? "Pi Testnet" : "Pi Mainnet"),
+    [sandbox, piNetwork],
   );
 
   const connected = Boolean(user && accessToken);
@@ -422,7 +423,7 @@ export default function Page() {
               <StatusCard
                 label="Network"
                 value={modeLabel}
-                detail={sandbox ? "Safe development mode" : "Production configuration"}
+                detail={sandbox ? "Local development environment" : piNetwork === "testnet" ? "Hosted Test Pi environment" : "Hosted Mainnet environment"}
                 tone="violet"
               />
               <StatusCard

@@ -9,6 +9,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const PI_API_BASE = process.env.PI_API_BASE || "https://api.minepi.com/v2";
 const PI_API_KEY = process.env.PI_API_KEY;
+const PI_NETWORK = process.env.PI_NETWORK || "testnet";
 const PI_WALLET = process.env.PI_WALLET || null;
 const ENABLE_X402 = process.env.ENABLE_X402 === "true";
 const X402_FACILITATOR = process.env.X402_FACILITATOR || null;
@@ -253,6 +254,7 @@ app.get("/health", (_req, res) => {
   res.json({
     ok: true,
     service: "qmoosa-pi",
+    piNetwork: PI_NETWORK,
     piApiConfigured: Boolean(PI_API_KEY),
     integrityKeyConfigured: INTEGRITY_HMAC_KEY.length >= 32,
     allowedOriginsConfigured: ALLOWED_ORIGINS.length > 0,
@@ -277,7 +279,7 @@ const x402Catalog = {
     website: "https://qmoosa-pi.netlify.app/",
     appUrl: "pi://qmoosa-pi.pinet.com",
     paymentScheme: "pi-u2a-and-x402-hybrid",
-    network: "pi-testnet",
+    network: `pi-${PI_NETWORK}`,
     piWallet: PI_WALLET,
     currency: ENABLE_X402 ? "external x402 settlement (separate from Pi Browser flow)" : "PI",
     supplyPolicy: "PI_NATIVE_UTILITY",
