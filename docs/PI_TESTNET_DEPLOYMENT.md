@@ -1,22 +1,22 @@
-# Pi Testnet Deployment
+# Pi Mainnet Deployment
 
-Qmoosa Pi's hosted frontend is configured for **Pi Testnet**, not the local Pi Sandbox and not Pi Mainnet.
+Qmoosa Pi's hosted frontend is configured for **Pi Mainnet**, not Pi Sandbox and not Pi Testnet.
 
 ## Runtime configuration
 
 Frontend production build:
 
 - `NEXT_PUBLIC_PI_SANDBOX=false`
-- `NEXT_PUBLIC_PI_NETWORK=testnet`
+- `NEXT_PUBLIC_PI_NETWORK=mainnet`
 - `NEXT_PUBLIC_PI_BACKEND_URL=https://qmoosa-pi-backend.onrender.com`
 
-SDK initialization therefore runs as:
+The SDK initializes with:
 
 ```ts
 Pi.init({ version: "2.0", sandbox: false })
 ```
 
-The blockchain network is determined by the Pi Developer Portal app registration. The registered app must use **App Network = Pi Testnet**.
+The blockchain network is determined by the Pi Developer Portal app registration. The owner has reported that the Qmoosa Pi app is registered with **App Network = Pi Mainnet**.
 
 ## Hosted URLs
 
@@ -28,23 +28,20 @@ Backend:
 
 `https://qmoosa-pi-backend.onrender.com`
 
-## Required Developer Portal binding
+## Mainnet external gates
 
-A hosted Testnet release is not the same thing as the local Sandbox.
+Code/hosting alignment alone does not prove a completed Mainnet launch. Before calling the app Mainnet-operational, verify all of the following in Pi Developer Portal and Pi Browser:
 
-To complete the external binding:
-
-1. Open the Pi Developer Portal inside Pi Browser.
-2. Create or select the Qmoosa Pi app whose **App Network is Pi Testnet**.
-3. Register the hosted frontend URL required by the portal.
-4. Use the validation key issued for that Testnet app/domain.
-5. Store that Testnet app's Server API Key as `PI_API_KEY` on the backend.
-6. Use the app wallet associated with the Testnet project.
-7. Open the app through Pi Browser and confirm the Testnet indicator.
-8. Authenticate and complete one Test Pi U2A payment end to end.
-
-The App Network cannot be switched after registration. If the existing Developer Portal app was registered for Mainnet, create a separate Testnet app instead.
+1. App Network is **Pi Mainnet**.
+2. Production/Hosted URL is registered and reachable over HTTPS.
+3. Domain ownership is verified with the exact Developer Portal validation key.
+4. The matching Mainnet Server API Key is stored only on the backend as `PI_API_KEY`.
+5. The Mainnet app wallet is connected.
+6. Incoming Multisig Wallet approval for the U2A payment flow is complete where required.
+7. A real Pioneer can authenticate in Pi Browser.
+8. One real User-to-App Mainnet payment completes end to end: create → approve → blockchain transaction → complete.
+9. Record the resulting Mainnet transaction ID for release evidence.
 
 ## Safety rule
 
-Test Pi has no monetary value. Qmoosa Pi should remain in Testnet until identity verification, payment approval/completion, persistence, monitoring, and mobile QA are demonstrated with recorded evidence.
+Never expose `PI_API_KEY`, wallet passphrase, private key, or seed phrase in client code, GitHub, logs, or chat.
