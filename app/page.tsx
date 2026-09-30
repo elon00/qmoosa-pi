@@ -55,7 +55,7 @@ export default function Page() {
 
   const backendUrl = (process.env.NEXT_PUBLIC_PI_BACKEND_URL || "").replace(/\/$/, "");
   const sandbox = process.env.NEXT_PUBLIC_PI_SANDBOX === "true";
-  const piNetwork = (process.env.NEXT_PUBLIC_PI_NETWORK || "testnet").toLowerCase();
+  const piNetwork = (process.env.NEXT_PUBLIC_PI_NETWORK || "mainnet").toLowerCase();
   const backendConfigured = Boolean(backendUrl);
 
   const modeLabel = useMemo(
