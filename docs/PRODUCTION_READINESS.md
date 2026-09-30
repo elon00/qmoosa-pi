@@ -7,8 +7,8 @@ Status legend: **DONE**, **CODE-READY**, **EXTERNAL**, **PENDING**.
 | Qmoosa Pi branding | DONE | UI/metadata/package naming aligned |
 | Pi SDK loading | CODE-READY | Validate inside registered Pi app |
 | Pi authentication | CODE-READY | Verify real Pioneer token via /v2/me |
-| Pi U2A payments | CODE-READY | Execute a real hosted Pi Testnet transaction with the matching Testnet app/API key |
-| Backend public runtime | DONE | Render backend deployed; Pages build configured for hosted Pi Testnet mode |
+| Pi U2A payments | CODE-READY | Execute a real Pi Mainnet transaction with the matching Mainnet app/API key |
+| Backend public runtime | DONE | Render backend deployed; Pages build configured for hosted Pi Mainnet mode |
 | Backend API key | EXTERNAL | Add through hosting secrets |
 | Domain validation file | CODE-READY | Complete Developer Portal ownership verification |
 | App wallet / multisig | EXTERNAL | Complete Pi Developer Portal workflow |
@@ -24,8 +24,8 @@ Status legend: **DONE**, **CODE-READY**, **EXTERNAL**, **PENDING**.
 | Backups/restore | PENDING | automated backup and restore drill |
 | CI build/typecheck/tests/audit | DONE | GitHub Actions includes backend regression tests and blocking high-severity dependency audits |
 | Secret hygiene gate | DONE | CI blocks tracked runtime secrets |
-| Testnet Developer Portal app | EXTERNAL | App Network must be Pi Testnet; network cannot be changed after registration |
-| Mobile/Pi Browser QA | EXTERNAL | Open the registered Testnet app in Pi Browser and confirm the Testnet indicator plus auth/payment flow |
+| Mainnet Developer Portal app | USER-CONFIRMED | App Network reported by owner as Pi Mainnet; network cannot be changed after registration |
+| Mobile/Pi Browser QA | EXTERNAL | Open the registered Mainnet app in Pi Browser and confirm Mainnet auth/payment flow and production URL routing |
 | Mainnet listing approval | EXTERNAL | Pi review/approval required |
 
 ## Recommended production architecture

@@ -39,7 +39,7 @@ jobs:
         env:
           GITHUB_PAGES: "true"
           NEXT_PUBLIC_PI_SANDBOX: "false"
-          NEXT_PUBLIC_PI_NETWORK: "testnet"
+          NEXT_PUBLIC_PI_NETWORK: "mainnet"
           NEXT_PUBLIC_PI_BACKEND_URL: "https://qmoosa-pi-backend.onrender.com"
         run: pnpm run build
 

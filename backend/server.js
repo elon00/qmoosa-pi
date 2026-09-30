@@ -9,7 +9,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const PI_API_BASE = process.env.PI_API_BASE || "https://api.minepi.com/v2";
 const PI_API_KEY = process.env.PI_API_KEY;
-const PI_NETWORK = process.env.PI_NETWORK || "testnet";
+const PI_NETWORK = process.env.PI_NETWORK || "mainnet";
 const PI_WALLET = process.env.PI_WALLET || null;
 const ENABLE_X402 = process.env.ENABLE_X402 === "true";
 const X402_FACILITATOR = process.env.X402_FACILITATOR || null;
@@ -372,7 +372,7 @@ app.get("/api/v1/status", (_req, res) => {
   res.json({
     status: "active",
     service: "Qmoosa Pi Platform",
-    network: "pi-testnet",
+    network: `pi-${PI_NETWORK}`,
     officialWallet: PI_WALLET,
     supplyPolicy: "PI_NATIVE_UTILITY",
     conwayEngine: {
