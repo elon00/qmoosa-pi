@@ -1,3 +1,1 @@
-# Pi Developer Portal domain validation placeholder.
-# Replace the line below with the exact validation key generated for this app/domain.
-REPLACE-WITH-PI-DEVELOPER-PORTAL-VALIDATION-KEY
+21c9fca7f896beaece9976cd71d7f773fcbb5d11d54dba796188064de26b937051738d4ab5ced327f1eb8bd20bf93858139ec8de91182e4ff53b3433081286dc
