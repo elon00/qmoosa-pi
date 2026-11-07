@@ -1,0 +1,389 @@
+{
+  "engine": "REA_Reverse_Engineer_Anything",
+  "status": "STRUCTURE_RECONSTRUCTED",
+  "analyzed_files": 127,
+  "manifest": {
+    "CODE_OF_CONDUCT.md": {
+      "bytes": 2253
+    },
+    "components.json": {
+      "bytes": 448
+    },
+    "CONTRIBUTING.md": {
+      "bytes": 1947
+    },
+    "deploy-qmoosa-pi.ps1": {
+      "bytes": 1310
+    },
+    "deploy-qmoosa-pi.sh": {
+      "bytes": 229
+    },
+    "LICENSE": {
+      "bytes": 1100
+    },
+    "next-env.d.ts": {
+      "bytes": 233
+    },
+    "next.config.mjs": {
+      "bytes": 575
+    },
+    "package.json": {
+      "bytes": 787
+    },
+    "pnpm-lock.yaml": {
+      "bytes": 47637
+    },
+    "postcss.config.mjs": {
+      "bytes": 152
+    },
+    "README.md": {
+      "bytes": 5086
+    },
+    "rustup-init.exe": {
+      "bytes": 13551616
+    },
+    "SECURITY.md": {
+      "bytes": 1619
+    },
+    "tsconfig.json": {
+      "bytes": 797
+    },
+    "tsconfig.tsbuildinfo": {
+      "bytes": 95158
+    },
+    ".github\\pull_request_template.md": {
+      "bytes": 832
+    },
+    "app\\globals.css": {
+      "bytes": 6861
+    },
+    "app\\layout.tsx": {
+      "bytes": 1346
+    },
+    "app\\page.tsx": {
+      "bytes": 37146
+    },
+    "backend\\package-lock.json": {
+      "bytes": 32326
+    },
+    "backend\\package.json": {
+      "bytes": 436
+    },
+    "backend\\server.js": {
+      "bytes": 24608
+    },
+    "backend\\test.js": {
+      "bytes": 2194
+    },
+    "components\\QmoosaFullLaunchpad.tsx": {
+      "bytes": 77527
+    },
+    "components\\theme-provider.tsx": {
+      "bytes": 336
+    },
+    "contracts\\Cargo.toml": {
+      "bytes": 151
+    },
+    "docs\\404.html": {
+      "bytes": 7766
+    },
+    "docs\\api-references.md": {
+      "bytes": 6121
+    },
+    "docs\\AUDIT_REPORT.md": {
+      "bytes": 4237
+    },
+    "docs\\developer-guide.md": {
+      "bytes": 4444
+    },
+    "docs\\female-ai-researcher-scientist.jpg": {
+      "bytes": 132306
+    },
+    "docs\\GLOBAL_MARKETING_STRATEGY.md": {
+      "bytes": 10895
+    },
+    "docs\\hispanic-male-blockchain-developer.jpg": {
+      "bytes": 92083
+    },
+    "docs\\index.html": {
+      "bytes": 31136
+    },
+    "docs\\index.txt": {
+      "bytes": 2859
+    },
+    "docs\\PI_MAINNET_DEPLOYMENT.md": {
+      "bytes": 1718
+    },
+    "docs\\PI_MAINNET_LAUNCH_GUIDE.md": {
+      "bytes": 3097
+    },
+    "docs\\placeholder-logo.png": {
+      "bytes": 568
+    },
+    "docs\\placeholder-logo.svg": {
+      "bytes": 3208
+    },
+    "docs\\placeholder-user.jpg": {
+      "bytes": 1635
+    },
+    "docs\\placeholder.jpg": {
+      "bytes": 1064
+    },
+    "docs\\placeholder.svg": {
+      "bytes": 3253
+    },
+    "docs\\privacy-policy.md": {
+      "bytes": 2503
+    },
+    "docs\\PRODUCTION_READINESS.md": {
+      "bytes": 3028
+    },
+    "docs\\professional-woman-crypto-investor.jpg": {
+      "bytes": 107363
+    },
+    "docs\\terms-of-service.md": {
+      "bytes": 2969
+    },
+    "docs\\UX_STANDARDS.md": {
+      "bytes": 4912
+    },
+    "docs\\validation-key.txt": {
+      "bytes": 228
+    },
+    "docs\\x402-bazaar.json": {
+      "bytes": 3260
+    },
+    "frontend\\package-lock.json": {
+      "bytes": 705295
+    },
+    "frontend\\package.json": {
+      "bytes": 1381
+    },
+    "frontend\\postcss.config.js": {
+      "bytes": 109
+    },
+    "frontend\\README.md": {
+      "bytes": 2163
+    },
+    "frontend\\tailwind.config.js": {
+      "bytes": 172
+    },
+    "frontend\\tsconfig.json": {
+      "bytes": 630
+    },
+    "lib\\utils.ts": {
+      "bytes": 172
+    },
+    "public\\female-ai-researcher-scientist.jpg": {
+      "bytes": 132306
+    },
+    "public\\hispanic-male-blockchain-developer.jpg": {
+      "bytes": 92083
+    },
+    "public\\pi-app-validation.txt": {
+      "bytes": 44
+    },
+    "public\\placeholder-logo.png": {
+      "bytes": 568
+    },
+    "public\\placeholder-logo.svg": {
+      "bytes": 3208
+    },
+    "public\\placeholder-user.jpg": {
+      "bytes": 1635
+    },
+    "public\\placeholder.jpg": {
+      "bytes": 1064
+    },
+    "public\\placeholder.svg": {
+      "bytes": 3253
+    },
+    "public\\professional-woman-crypto-investor.jpg": {
+      "bytes": 107363
+    },
+    "public\\validation-key.txt": {
+      "bytes": 130
+    },
+    "public\\x402-bazaar.json": {
+      "bytes": 503
+    },
+    "scripts\\one-click-finisher.js": {
+      "bytes": 1803
+    },
+    "scripts\\qmoosa-doctor.js": {
+      "bytes": 1250
+    },
+    "scripts\\rea_inspector.py": {
+      "bytes": 1485
+    },
+    "scripts\\rsi_engine.py": {
+      "bytes": 2039
+    },
+    "styles\\globals.css": {
+      "bytes": 4462
+    },
+    "tests\\reality_check_harness.py": {
+      "bytes": 1250
+    },
+    "types\\pi.d.ts": {
+      "bytes": 928
+    },
+    "whitepaper\\Pi-Network-Launchpad-Whitepaper.md": {
+      "bytes": 1642
+    },
+    "whitepaper\\QMOOSA_PI_WHITEPAPER.md": {
+      "bytes": 15011
+    },
+    ".github\\ISSUE_TEMPLATE\\bug_report.md": {
+      "bytes": 717
+    },
+    ".github\\ISSUE_TEMPLATE\\feature_request.md": {
+      "bytes": 649
+    },
+    ".github\\workflows\\ci.yml": {
+      "bytes": 2233
+    },
+    ".github\\workflows\\pages.yml": {
+      "bytes": 1387
+    },
+    ".github\\workflows\\qmoosa-one-click.yml": {
+      "bytes": 3698
+    },
+    ".github\\workflows\\qmoosa-rsi-rea-sync.yml": {
+      "bytes": 531
+    },
+    "components\\ui\\badge.tsx": {
+      "bytes": 1687
+    },
+    "components\\ui\\button.tsx": {
+      "bytes": 2192
+    },
+    "components\\ui\\card.tsx": {
+      "bytes": 2081
+    },
+    "components\\ui\\input.tsx": {
+      "bytes": 988
+    },
+    "contracts\\src\\lib.rs": {
+      "bytes": 831
+    },
+    "docs\\404\\index.html": {
+      "bytes": 7766
+    },
+    "docs\\_next\\static\\chunks\\39b39b47-552191b238720562.js": {
+      "bytes": 172831
+    },
+    "docs\\_next\\static\\chunks\\565-b55d264502fd0c2e.js": {
+      "bytes": 31847
+    },
+    "docs\\_next\\static\\chunks\\923-fa049d39beac3de2.js": {
+      "bytes": 123819
+    },
+    "docs\\_next\\static\\chunks\\framework-a7cd5acb3f20f961.js": {
+      "bytes": 139367
+    },
+    "docs\\_next\\static\\chunks\\main-aea7d4f545a4eaf3.js": {
+      "bytes": 110924
+    },
+    "docs\\_next\\static\\chunks\\main-app-d8b9d4ee33018f67.js": {
+      "bytes": 462
+    },
+    "docs\\_next\\static\\chunks\\polyfills-42372ed130431b0a.js": {
+      "bytes": 112595
+    },
+    "docs\\_next\\static\\chunks\\webpack-84e5a5aab29f3bda.js": {
+      "bytes": 3605
+    },
+    "docs\\_next\\static\\css\\fc54d9e568d31456.css": {
+      "bytes": 54766
+    },
+    "docs\\_next\\static\\FelMQQMFZ_gkiHKT1Rd8g\\_buildManifest.js": {
+      "bytes": 224
+    },
+    "docs\\_next\\static\\FelMQQMFZ_gkiHKT1Rd8g\\_ssgManifest.js": {
+      "bytes": 80
+    },
+    "docs\\_next\\static\\media\\028c0d39d2e8f589-s.p.woff2": {
+      "bytes": 58512
+    },
+    "docs\\_next\\static\\media\\5b01f339abf2f1a5.p.woff2": {
+      "bytes": 58092
+    },
+    "docs\\_next\\static\\chunks\\app\\layout-a50ef9d072a821b6.js": {
+      "bytes": 13144
+    },
+    "docs\\_next\\static\\chunks\\app\\page-35fcc51d3215790c.js": {
+      "bytes": 53342
+    },
+    "docs\\_next\\static\\chunks\\pages\\_app-7c4628464da11611.js": {
+      "bytes": 280
+    },
+    "docs\\_next\\static\\chunks\\pages\\_error-5f46dcfa5b6f6b58.js": {
+      "bytes": 247
+    },
+    "docs\\_next\\static\\chunks\\app\\_not-found\\page-ac303305f06e82df.js": {
+      "bytes": 1745
+    },
+    "frontend\\public\\favicon.ico": {
+      "bytes": 3870
+    },
+    "frontend\\public\\index.html": {
+      "bytes": 1826
+    },
+    "frontend\\public\\logo192.png": {
+      "bytes": 5347
+    },
+    "frontend\\public\\logo512.png": {
+      "bytes": 9664
+    },
+    "frontend\\public\\manifest.json": {
+      "bytes": 517
+    },
+    "frontend\\public\\robots.txt": {
+      "bytes": 70
+    },
+    "frontend\\src\\App.css": {
+      "bytes": 602
+    },
+    "frontend\\src\\App.test.tsx": {
+      "bytes": 282
+    },
+    "frontend\\src\\App.tsx": {
+      "bytes": 24563
+    },
+    "frontend\\src\\index.css": {
+      "bytes": 443
+    },
+    "frontend\\src\\index.tsx": {
+      "bytes": 573
+    },
+    "frontend\\src\\logo.svg": {
+      "bytes": 2632
+    },
+    "frontend\\src\\react-app-env.d.ts": {
+      "bytes": 41
+    },
+    "frontend\\src\\reportWebVitals.ts": {
+      "bytes": 440
+    },
+    "frontend\\src\\setupTests.ts": {
+      "bytes": 246
+    },
+    "frontend\\src\\lib\\utils.ts": {
+      "bytes": 172
+    },
+    "frontend\\src\\components\\ui\\badge.tsx": {
+      "bytes": 1681
+    },
+    "frontend\\src\\components\\ui\\button.tsx": {
+      "bytes": 2186
+    },
+    "frontend\\src\\components\\ui\\card.tsx": {
+      "bytes": 2085
+    },
+    "frontend\\src\\components\\ui\\input.tsx": {
+      "bytes": 992
+    }
+  },
+  "timestamp": 1794023573
+}
