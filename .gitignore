@@ -12,3 +12,6 @@ contracts/target/
 .next/
 out/
 pnpm-workspace.yaml
+
+# Lean 4 build artifacts
+lean_verify/.lake/
